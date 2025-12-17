@@ -13,7 +13,6 @@ export default function Home() {
       <Unauthenticated>
         <SignInButton></SignInButton>
       </Unauthenticated>
-
       <Authenticated>
         <SignOutButton></SignOutButton>
         <h1>hello</h1>
