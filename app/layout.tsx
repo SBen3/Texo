@@ -4,6 +4,8 @@ import "./globals.css";
 
 import { ConvexClientProvider } from "@/providers/convex-client-provider";
 
+import { SignInButton } from "@clerk/nextjs";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
