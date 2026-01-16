@@ -1,19 +1,20 @@
+"use client";
+
 import { Plus } from "lucide-react";
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
-import { OrganizationProfile } from "@clerk/nextjs";
+import { useClerk } from "@clerk/nextjs";
+
 const InviteButton = () => {
+  const { openOrganizationProfile } = useClerk();
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <button className="text-sm px-3 bg-green-500 text-white rounded-md hover:bg-green-600 transition">
-          <Plus size={16} className="inline-block m-1 " />
-          Invite Members
-        </button>
-      </DialogTrigger>
-      <DialogContent className="p-0 bg-transparent border-none max-w-[450px]">
-        <OrganizationProfile />
-      </DialogContent>
-    </Dialog>
+    <>
+      <div
+        className="text-sm h-8 px-3 pt-1 mt-3 bg-gray-300 text-black rounded-md hover:bg-gray-400 transition cursor-pointer"
+        onClick={() => openOrganizationProfile()}
+      >
+        <Plus size={15} className="inline-block mr-2 mb-1" />
+        Invite Members
+      </div>
+    </>
   );
 };
 export default InviteButton;

@@ -1,11 +1,18 @@
-import { SignOutButton } from "@clerk/nextjs";
+import { use } from "react";
+import BoardList from "@/components/boardList";
 
-const dashboardLayout = () => {
+interface DashboardProps {
+  searchParams: Promise<{ 
+    search?: string; 
+    favorites?: string 
+  }>;
+}
+
+const DashboardLayout = ({ searchParams }: DashboardProps) => {
+  const params = use(searchParams); 
   return (
-    <>
-      <h1>My Dashboard</h1>
-    </>
+    <BoardList query={params} /> 
   );
 };
 
-export default dashboardLayout;
+export default DashboardLayout;

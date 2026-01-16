@@ -11,7 +11,7 @@ const dashboardLayout = ({ children }: dashboardLayout) => {
     <>
       <main className="flex h-full">
         <SideBar />
-        <div className="hidden md:flex">
+        <div className="hidden lg:flex">
           <OrgSideBare />
         </div>
         <div className="h-full w-full">

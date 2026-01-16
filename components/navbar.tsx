@@ -5,23 +5,26 @@ import InviteButton from "./invite-button";
 const NavBar = () => {
   return (
     <>
-      <div className="hidden md:w-full p-2 md:flex md:justify-between">
+      <div className="flex justify-between">
+        <div className="hidden p-2 lg:flex lg:justify-between">
         <SearchInput />
-        <UserButton />
       </div>
-      <div className="w-full p-2 flex justify-between md:hidden ">
+      <div className="p-2 flex justify-between lg:hidden ">
         <OrganizationSwitcher
           appearance={{
             elements: {
               rootBox:
-                "bg-gray-600 hover:bg-gray-700 text-white transition rounded-md border-2 border-gray-200",
-              organizationSwitcherTrigger: "text-white",
-              organizationPreviewTextContainer: "text-white",
-              
+                "bg-gray-300 hover:bg-gray-400 transition rounded-md border-2 border-gray-400",
+              organizationSwitcherTrigger: "text-black",
+              organizationPreviewTextContainer: "text-black",
             },
           }}
         />
-        <InviteButton />
+      </div>
+      <div className="flex gap-2">
+          <InviteButton />
+          <UserButton />
+        </div>
       </div>
     </>
   );
