@@ -1,13 +1,13 @@
 import SearchUi from "./searchUi";
 import FavUi from "./favUi";
 import BoardUi from "./boardUi";
-
 interface BoardListProps {
   query: {
     search?: string;
     favorites?: string;
   };
 }
+
 const BoardList = ({ query }: BoardListProps) => {
   const data: any[] = [];
   if (!data.length && query.search) return <div><SearchUi /></div>;
