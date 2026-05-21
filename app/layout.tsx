@@ -3,8 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import { ConvexClientProvider } from "@/providers/convex-client-provider";
-
-import { SignInButton } from "@clerk/nextjs";
 import { Toaster } from "sonner";
 
 const geistSans = Geist({

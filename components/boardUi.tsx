@@ -2,8 +2,8 @@
 import Image from "next/image";
 import boardPic from "@/public/board.png";
 import { useOrganization } from "@clerk/nextjs";
-import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { useMutation } from "convex/react";
 import {toast} from "sonner"; 
 
 const BoardUi = () => {

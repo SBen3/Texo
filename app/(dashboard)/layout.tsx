@@ -1,5 +1,5 @@
 import SideBar from "@/components/side-bar";
-import OrgSideBare from "@/components/sidebare";
+import OrgSideBare from "@/components/organizationSidebare";
 import NavBar from "@/components/navbar";
 
 interface dashboardLayout {

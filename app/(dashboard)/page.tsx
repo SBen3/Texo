@@ -1,5 +1,8 @@
+"use client";
+
 import { use } from "react";
 import BoardList from "@/components/boardList";
+import { useOrganization } from "@clerk/nextjs";
 
 interface DashboardProps {
   searchParams: Promise<{ 
@@ -10,9 +13,12 @@ interface DashboardProps {
 
 const DashboardLayout = ({ searchParams }: DashboardProps) => {
   const params = use(searchParams); 
+  const {organization} = useOrganization();
   return (
-    <BoardList query={params} /> 
+    <BoardList 
+    orgId={organization?.id || ""} 
+    query={params} /> 
   );
 };
 
-export default DashboardLayout;
+export default DashboardLayout; 
