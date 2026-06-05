@@ -55,7 +55,7 @@ const BoardList = ({ orgId, query }: BoardListProps) => {
       <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         <CreateBoard
           orgId={orgId}
-          disabled 
+          disabled= {false} 
         />
         {boards.map(
           (board) => (

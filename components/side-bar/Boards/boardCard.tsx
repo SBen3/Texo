@@ -3,9 +3,12 @@ import Overlay from "./overlay";
 import Image from "next/image";
 import Footer from "./footer";
 import { Skeleton } from "@/components/ui/skeleton";
+import { MoreHorizontal } from "lucide-react";
+import {Actions} from "@/components/action";
+import { Id } from "@/convex/_generated/dataModel";
 
 interface BoardCardProps {
-  id: string;
+  id: Id<"boards">;
   title: string;
   imageUrl: string;
   authorName: string;
@@ -14,6 +17,7 @@ interface BoardCardProps {
   isFavorite?: boolean;
 }
 const BoardCard = ({
+  id,
   title,
   imageUrl,
   authorName,
@@ -25,6 +29,13 @@ const BoardCard = ({
       <div className="relative w-full h-60 bg-muted">
         <Image src={imageUrl} alt={title} fill className="object-cover" />
         <Overlay />
+        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <Actions id={id} title={title} side="right">
+          <button className="p-1.5 rounded-sm hover:bg-black/10">
+            <MoreHorizontal className="h-4 w-4 text-white" />
+          </button>
+        </Actions>
+      </div>
       </div>
       <Footer
         title={title}
@@ -38,11 +49,12 @@ const BoardCard = ({
   );
 };
 BoardCard.skeleton = function boardCardSkeleton() {
-  return <>
-    <div className="rounded-lg overflow-hidden">
-      <Skeleton className="w-full h-60 bg-muted" />
+  return (
+    <>
+      <div className="rounded-lg overflow-hidden">
+        <Skeleton className="w-full h-60 bg-muted" />
       </div>
-
-  </>
-}
-export default BoardCard; 
+    </>
+  );
+};
+export default BoardCard;
