@@ -15,7 +15,19 @@ export const getBoards = query({
       .order("desc")
       .collect();
 
-    return boards;
+    const boardWithFavStatus = boards.map((board) => {
+      return ctx.db
+        .query("userFavorites")
+        .withIndex("by_user_board", (q) =>
+          q.eq("userId", indentity.subject).eq("boardId", board._id),
+        )
+        .unique()
+        .then((favorite) => ({
+          ...board,
+          isFavorite: !!favorite,
+        }));
+    });
+    return Promise.all(boardWithFavStatus);
   },
 });
 export const remove = mutation({
@@ -41,7 +53,10 @@ export const update = mutation({
     if (!title) throw new Error("Title cannot be empty");
     if (title.length > 60) throw new Error("Title too long");
 
-    const board = await ctx.db.patch(args.id, { title });
-    return board;
+    const boards = await ctx.db.patch(args.id, { title });
+
+    const updatedBoard = await ctx.db.get(args.id);
+
+    return boards;
   },
 });

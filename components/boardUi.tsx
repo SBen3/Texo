@@ -9,7 +9,7 @@ import {toast} from "sonner";
 const BoardUi = () => {
   const create = useMutation(api.board.create);
   const { organization } = useOrganization();
-
+  
   const handleCreateBoard = async () => {
     if (!organization) return;
     await create({ orgId: organization.id, title: "New Board" }).then(() => {

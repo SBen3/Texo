@@ -7,7 +7,7 @@ interface FooterProps {
   authorName: string;
   createdAt: number;
   isFavorite: boolean;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   disabled: boolean;
 }
 
@@ -22,8 +22,8 @@ const Footer = ({
   const createdAtLabel = formatDistanceToNow(createdAt, { addSuffix: true });
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation(); // 👈 prevent card click when clicking star
-    onClick();
+    e.stopPropagation(); 
+    onClick(e);
   };
 
   return (

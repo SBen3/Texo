@@ -80,4 +80,4 @@ export const Actions = ({
     </DropdownMenu>
   );
 };
-("This will permanently delete the board. This action cannot be undone.");
+
