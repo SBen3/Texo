@@ -16,7 +16,7 @@ interface BoardListProps {
   };
 }
 const BoardList = ({ orgId, query }: BoardListProps) => {
-  const boards = useQuery(api.boards.getBoards, { orgId });
+  const boards = useQuery(api.boards.getBoards, { orgId , ...query });
   if (boards === undefined) return <>
   <h1 className="text-4xl m-2 mb-4">{query.favorites ? "Favorites Team" : "Boards Team"}</h1>
   <div className="m-3 grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
