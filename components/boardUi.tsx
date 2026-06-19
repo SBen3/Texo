@@ -4,19 +4,24 @@ import boardPic from "@/public/board.png";
 import { useOrganization } from "@clerk/nextjs";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
-import {toast} from "sonner"; 
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const BoardUi = () => {
-  const create = useMutation(api.board.create);
   const { organization } = useOrganization();
-  
+  const router = useRouter();
+  const create = useMutation(api.board.create);
+
   const handleCreateBoard = async () => {
     if (!organization) return;
-    await create({ orgId: organization.id, title: "New Board" }).then(() => {
-      toast.success("Board created successfully!");
-    }).catch(() => {
-      toast.error("Failed to create board.");
-    });
+    await create({ orgId: organization.id, title: "New Board" })
+      .then(() => {
+        toast.success("Board created successfully!");
+        router.push(`/board/${organization.id}`);
+      })
+      .catch(() => {
+        toast.error("Failed to create board.");
+      });
   };
   return (
     <div className="flex flex-col justify-center items-center">
