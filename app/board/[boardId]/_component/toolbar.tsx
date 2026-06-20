@@ -19,3 +19,20 @@ export const Toolbar = () => {
     </div>
   );
 };
+
+Toolbar.Skeleton = () => {
+  return (
+    <div className="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-2">
+      <div className="flex flex-col gap-1 ">
+        <div className="w-[100px] h-10 bg-gray-200 rounded-md animate-pulse"></div>
+        <div className="w-[100px] h-10 bg-gray-200 rounded-md animate-pulse"></div>
+        <div className="w-[100px] h-10 bg-gray-200 rounded-md animate-pulse"></div>
+        <div className="w-[100px] h-10 bg-gray-200 rounded-md animate-pulse"></div>
+      </div>
+      < div className="flex flex-col gap-1 ">
+        <div className="w-[100px] h-10 bg-gray-200 rounded-md animate-pulse"></div>
+        <div className="w-[100px] h-10 bg-gray-200 rounded-md animate-pulse"></div>
+      </div>
+    </div>
+  );
+};
