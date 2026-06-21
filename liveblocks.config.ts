@@ -1,8 +1,9 @@
 import { createClient } from "@liveblocks/client";
+import { Liveblocks } from "@liveblocks/node";
 import { createRoomContext } from "@liveblocks/react";
 
 const client = createClient({
-  publicApiKey: process.env.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY!,
+ authEndpoint : "/api/liveblocks-auth"
 });
 
 // Presence = what each user shares in real-time (e.g. cursor position)
@@ -13,7 +14,7 @@ type Presence = {
 // Storage = persistent room data (shapes, layers, etc.)
 type Storage = {};
 
-type UserMeta = {
+type UserMeta = { 
   id: string;
   info: {
     name: string;

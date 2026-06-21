@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 
 const images = [
   "/placeholder/1.png",
@@ -54,7 +54,7 @@ export const addFavorite = mutation({
     if (existingFavorite) throw new Error("Board already favorited");
 
     await ctx.db.insert("userFavorites", {
-      userId,
+      userId, 
       boardId: board._id,
       orgId: args.orgId,
     });
@@ -84,5 +84,16 @@ export const removeFavorite = mutation({
     if (!existingFavorite) throw new Error("Favorite not found");
 
     await ctx.db.delete(existingFavorite._id);
+  },
+});
+
+export const get = query({
+  args: {
+    boardId: v.id("boards"),
+  },
+  handler: async (ctx, args) => {
+    const board = await ctx.db.get(args.boardId);
+    if (!board) throw new Error("Board not found");
+    return board;
   },
 });

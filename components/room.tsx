@@ -13,5 +13,5 @@ export const Room = ({roomId , children, fallback} : RoomProps) => {
             {()=> children}
             </ClientSideSuspense>
         </RoomProvider>
-    )
+    )   
 }

@@ -9,6 +9,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface BoardCardProps {
   id: Id<"boards">;
@@ -28,6 +29,8 @@ const BoardCard = ({
   orgId,
   isFavorite = false,
 }: BoardCardProps) => {
+  const router = useRouter()
+
   const addFavorite = useMutation(api.board.addFavorite);
   const removeFavorite = useMutation(api.board.removeFavorite);
   const handleFavorite = (e: React.MouseEvent) => {
@@ -43,9 +46,9 @@ const BoardCard = ({
   };
 
   return (
-    <div className="group relative border rounded-lg overflow-hidden hover:shadow-md transition">
-      <div className="relative w-full h-60 bg-muted">
-        <Image src={imageUrl} alt={title} fill className="object-cover" />
+    <div className="group relative border rounded-lg overflow-hidden hover:shadow-md transition" onClick={()=>router.push(`board/${id}`)}>
+      <div className="relative w-full h-60 bg-muted" >
+        <Image src={imageUrl} alt={title} fill className="object-cover"/>
         <Overlay />
         <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <Actions id={id} title={title} side="right">
