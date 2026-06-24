@@ -1,4 +1,3 @@
-"use client"
 import { Info } from "./info"
 import { Participant } from "./participant"
 import { Toolbar } from "./toolbar"
@@ -12,7 +11,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     const info = useSelf(me=>me.info)
     return (
         <div>
-            <Info />
+            <Info boardId={boardId} />
             <Participant />
             <Toolbar /> 
         </div>

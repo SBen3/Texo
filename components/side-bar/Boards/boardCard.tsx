@@ -46,7 +46,7 @@ const BoardCard = ({
   };
 
   return (
-    <div className="group relative border rounded-lg overflow-hidden hover:shadow-md transition" onClick={()=>router.push(`board/${id}`)}>
+    <div className="group relative border rounded-lg overflow-hidden hover:shadow-md transition cursor-pointer" onClick={()=>router.push(`board/${id}`)}>
       <div className="relative w-full h-60 bg-muted" >
         <Image src={imageUrl} alt={title} fill className="object-cover"/>
         <Overlay />
