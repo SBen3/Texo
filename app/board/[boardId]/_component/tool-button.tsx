@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { LucideIcon } from "lucide-react";
 
 interface toolButtonProp {
-  disabaled?: boolean;
+  isDisabled?: boolean;
   onClick: () => void;
   label: string;
   isActive?: boolean;
@@ -11,7 +11,7 @@ interface toolButtonProp {
 }
 
 export const ToolButton = ({
-  disabaled,
+  isDisabled,
   onClick,
   label,
   isActive,
@@ -20,7 +20,7 @@ export const ToolButton = ({
   return (
     <Hint label={label} sideOffset={10} side="right">
       <Button
-        disabled={disabaled}
+        disabled={isDisabled}
         onClick={onClick}
         size="icon"
         variant={isActive ? "boardActive" : "board"}
