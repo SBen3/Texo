@@ -1,9 +1,10 @@
-import { RectangleLayer } from "@/app/types/canvas";
+import { Color, RectangleLayer } from "@/app/types/canvas";
+
 interface RectangleProps {
   id: string;
   layer: RectangleLayer;
   onPointerDown: (e: React.PointerEvent, id: string) => void;
-  selectionColor?: string;
+  selectionColor?: Color;
 }
 
 export const Rectangle = ({
@@ -17,7 +18,7 @@ export const Rectangle = ({
   return (
     <rect
       className="drop-shadow-md"
-      onPointerDown={(e) => onPointerDown(e, id)}
+      onPointerDown={()=>{}}
       style={{
         transform: `translate(${x}px, ${y}px)`,
       }}
@@ -26,8 +27,8 @@ export const Rectangle = ({
       width={width}
       height={height}
       strokeWidth={1}
-      fill={`black`}
-      stroke={selectionColor || "transparent"}
+      fill={selectionColor ? `rgb(${fill.r}, ${fill.g}, ${fill.b})` : "none"}
+      stroke={selectionColor ? `rgb(${selectionColor.r}, ${selectionColor.g}, ${selectionColor.b})` : "none"}
     />
   );
 };

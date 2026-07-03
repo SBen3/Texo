@@ -55,8 +55,8 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     setMyPresence({ cursor: null });
   }, []);
   const [lastUsedColor, setLastUsedColor] = useState<Color>({
-    r: 100,
-    g: 0,
+    r: 200,
+    g: 50,
     b: 0,
   });
   const insertLayer = useMutation(
@@ -129,7 +129,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
       >
         <g style={{ transform: `translate(${camera.x}px, ${camera.y}px)` }}>
           {layerIds.map((layerId) => (
-            <LayerPreview key={layerId} id={layerId} />
+            <LayerPreview key={layerId} id={layerId} selectionColor={lastUsedColor} />
           ))}
           <CursorsPresence />
         </g>
