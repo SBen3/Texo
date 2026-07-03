@@ -1,21 +1,31 @@
-import { createClient } from "@liveblocks/client";
-import { Liveblocks } from "@liveblocks/node";
+import {
+  createClient,
+  LiveList,
+  LiveMap,
+  LiveObject,
+} from "@liveblocks/client";
+
 import { createRoomContext } from "@liveblocks/react";
+import { Layer } from "./app/types/canvas";
 
 const client = createClient({
-throttle: 16,
- authEndpoint : "/api/liveblocks-auth"
+  throttle: 16,
+  authEndpoint: "/api/liveblocks-auth",
 });
 
 // Presence = what each user shares in real-time (e.g. cursor position)
 type Presence = {
   cursor: { x: number; y: number } | null;
+  selection: string[];
 };
 
 // Storage = persistent room data (shapes, layers, etc.)
-type Storage = {};
+type Storage = {
+  layers: LiveMap<string, LiveObject<Layer>>;
+  layerIds: LiveList<string>;
+};
 
-type UserMeta = { 
+type UserMeta = {
   id: string;
   info: {
     name: string;
@@ -42,7 +52,7 @@ export const {
     useEventListener,
     useErrorListener,
     useStorage,
-/*     useObject,
+    /*     useObject,
     useMap,
     useList,
     useBatch, */
