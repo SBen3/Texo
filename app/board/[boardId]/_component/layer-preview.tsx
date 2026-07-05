@@ -1,16 +1,16 @@
 import { useStorage } from "@/liveblocks.config";
-import { Color, LayerType } from "@/app/types/canvas";
+import { LayerType } from "@/app/types/canvas";
 import { Rectangle } from "./rectangle";
 import { memo } from "react"; 
 
 interface LayerPreviewProps {
   id: string;
-  onLayerPointerDown?: (e: React.PointerEvent, layerId: string) => void;
-  selectionColor?: Color;
+  selectionColor: string;
+  onLayerPointerDown: (e: React.PointerEvent, layerId: string) => void;
 }
 
 export const LayerPreview = memo(
-  ({ id, onLayerPointerDown, selectionColor }: LayerPreviewProps) => {
+  ({ id, selectionColor, onLayerPointerDown }: LayerPreviewProps) => {
     const layer = useStorage((root) => root.layers[id]);
 
     if (!layer) {
@@ -23,7 +23,7 @@ export const LayerPreview = memo(
           <Rectangle
             id={id}
             layer={layer}
-            onPointerDown={()=>{}}
+            onPointerDown={onLayerPointerDown}
             selectionColor={selectionColor}
           />
         );

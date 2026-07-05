@@ -17,7 +17,7 @@ const client = createClient({
 type Presence = {
   cursor: { x: number; y: number } | null;
   selection: string[];
-};
+}; 
 
 // Storage = persistent room data (shapes, layers, etc.)
 type Storage = {
