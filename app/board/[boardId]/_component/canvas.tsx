@@ -24,6 +24,7 @@ import { CursorsPresence } from "./cursors-presence";
 import { nanoid } from "nanoid";
 import { LiveObject } from "@liveblocks/client";
 import { LayerPreview } from "./layer-preview";
+import { SelectionBox } from "./selection-box";
 interface CanvasProps {
   boardId: string;
 }
@@ -57,7 +58,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
   }, []);
   const [lastUsedColor, setLastUsedColor] = useState<Color>({
     r: 200,
-    g: 50,
+    g: 250,
     b: 0,
   });
   const insertLayer = useMutation(
@@ -109,7 +110,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     [camera, canvasState, history, insertLayer],
   );
   const layerIds = useStorage((root) => root.layerIds);
-  // we enter onPointerDown "selection: [layerId]", cursor ydi LayerId ta3 layer , w ndiro "selection" bch na3arfo layer li tsilakto w yfot fihom "layerId" w "layerId" njbdo connectionId (color)
+
   const selections = useOthersMapped((other) => other.presence.selection);
   const layerIdsToColorSelection = useMemo(() => {
     const layerIdsToColorSelection: Record<string, string> = {};
@@ -171,6 +172,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
             />
           ))}
           <CursorsPresence />
+          <SelectionBox onResizeHandlePointerDown={()=>{}}/>
         </g>
       </svg>
     </div>
