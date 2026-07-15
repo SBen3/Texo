@@ -3,7 +3,8 @@ import { useSelf, useMutation } from "@/liveblocks.config";
 import { useSelectionBounds } from "@/app/hooks/use-selection-bounds";
 import { ColorPicker } from "./color-picker";
 import { memo } from "react";
-
+import { Trash2 } from "lucide-react";
+import { useDeleteLayers } from "./use-delete-layers";
 interface SelectionToolsProps {
   camera: Camera;
   setLastUsedColor: (color: Color) => void;
@@ -13,11 +14,12 @@ export const SelectionTools = memo(
   ({ camera, setLastUsedColor }: SelectionToolsProps) => {
     const selection = useSelf((me) => me.presence.selection);
 
+    const deleteLayers = useDeleteLayers();
     const setFill = useMutation(
       ({ storage }, fill) => {
         const liveLayers = storage.get("layers");
-        if(!liveLayers){
-          return
+        if (!liveLayers) {
+          return;
         }
         setLastUsedColor(fill);
         selection.forEach((id) => {
@@ -34,14 +36,22 @@ export const SelectionTools = memo(
     const x = selectionBounds.width / 2 + selectionBounds.x - camera.x;
     const y = selectionBounds.y - camera.y;
     return (
-      <>
-        <div
-          className="absolute z-10 bg-white rounded-md p-2 border-2 border-black/5"
-          style={{ transform: `translate(${x - 90}px, ${y - 80}px)` }}
+      <div
+        className="absolute z-10 flex items-center gap-2 bg-white rounded-md p-2 border-2 border-black/5"
+        style={{
+          transform: `translate(${x - 90}px, ${y - 80}px)`,
+        }}
+      >
+        <ColorPicker onChange={setFill} />
+
+        <button
+          className="flex pr-2 py-1 text-sm rounded hover:bg-red-100 text-red-600 font-medium"
+          onClick={deleteLayers}
         >
-          <ColorPicker onChange={setFill} />
-        </div>
-      </>
+          <Trash2 size={20} />
+          Delete
+        </button>
+      </div>
     );
   },
 );

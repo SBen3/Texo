@@ -17,7 +17,6 @@ const CreateBoard = ({orgId, disabled}: newBoardButtonProps ) => {
   const router = useRouter();
 
   const handleCreate = async () => {
-    console.log(orgId)
     if (!orgId) return;
 
     try {
