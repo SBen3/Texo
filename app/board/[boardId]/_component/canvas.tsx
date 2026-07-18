@@ -35,6 +35,7 @@ import { SelectionTools } from "./selection-tools";
 interface CanvasProps {
   boardId: string;
 }
+import { findIntersectingWithRectangle } from "@/lib/utils";
 const MAX_LAYERS = 100;
 export const Canvas = ({ boardId }: CanvasProps) => {
   const info = useSelf((me) => me.info);
@@ -113,12 +114,44 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     },
     [canvasState],
   );
+  const startMultiSelection = useCallback((current: Point, origin: Point) => {
+    if (Math.abs(current.x - origin.x + (current.y - origin.y))) {
+      setCanvasState({
+        mode: CanvasMode.SelectionNet,
+        current,
+        origin,
+      });
+    }
+  }, []);
+  const updateSelectionNet = useMutation(
+    ({ storage, setMyPresence }, current: Point, origin: Point) => {
+      const layers = storage.get("layers");
+      const layerIds = storage.get("layerIds");
+      setCanvasState({
+        mode: CanvasMode.SelectionNet,
+        current,
+        origin,
+      });
+      const ids = findIntersectingWithRectangle(
+        layerIds,
+        layers,
+        current,
+        origin,
+      );
+      setMyPresence({ selection: ids });
+    },
+    [],
+  );
   const onPointerMove = useMutation(
     ({ setMyPresence }, e: React.PointerEvent) => {
       e.preventDefault();
       const current = pointerEventToCanvasPoint(e, camera);
       setMyPresence({ cursor: current });
-      if (canvasState.mode === CanvasMode.Translating) {
+      if (canvasState.mode === CanvasMode.Pressing) {
+        startMultiSelection(current, canvasState.origin);
+      } else if (canvasState.mode === CanvasMode.SelectionNet) {
+        updateSelectionNet(current, canvasState.origin);
+      } else if (canvasState.mode === CanvasMode.Translating) {
         translateSelectedLayers(current);
       } else if (canvasState.mode === CanvasMode.Resizing) {
         resizeSelectedLayer(current);
@@ -251,10 +284,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         canUndo={canUndo}
         canRedo={canRedo}
       />
-      <SelectionTools 
-      camera = {camera}
-      setLastUsedColor = {setLastUsedColor}
-      />
+      <SelectionTools camera={camera} setLastUsedColor={setLastUsedColor} />
       <svg
         className="w-screen h-screen"
         onWheel={onWheel}
@@ -274,6 +304,16 @@ export const Canvas = ({ boardId }: CanvasProps) => {
           ))}
           <CursorsPresence />
           <SelectionBox onResizeHandlePointerDown={onResizeHandlePointerDown} />
+          {canvasState.mode === CanvasMode.SelectionNet &&
+            canvasState.current != null && (
+              <rect
+                className="fill-blue-500/5 stroke-blue-500 stroke-1"
+                x={Math.min(canvasState.origin.x, canvasState.current.x)}
+                y={Math.min(canvasState.origin.y, canvasState.current.y)}
+                width={Math.abs(canvasState.origin.x - canvasState.current.x)}
+                height={Math.abs(canvasState.origin.y - canvasState.current.y)}
+              />
+            )}
         </g>
       </svg>
     </div>
