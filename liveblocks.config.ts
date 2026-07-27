@@ -4,7 +4,7 @@ import {
   LiveMap,
   LiveObject,
 } from "@liveblocks/client";
-
+import { Color } from "./app/types/canvas";
 import { createRoomContext } from "@liveblocks/react";
 import { Layer } from "./app/types/canvas";
 
@@ -17,7 +17,9 @@ const client = createClient({
 type Presence = {
   cursor: { x: number; y: number } | null;
   selection: string[];
-}; 
+  pencilDraft: [x: number, y: number, pressure: number][] | null;
+  pencilColor: Color | null;
+};
 
 // Storage = persistent room data (shapes, layers, etc.)
 type Storage = {
