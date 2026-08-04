@@ -71,7 +71,7 @@ export const SelectionTools = memo(
       <div
         className="absolute z-10 flex items-center gap-2 bg-white rounded-md p-2 border-2 border-black/5"
         style={{
-          transform: `translate(${x - 100}px, ${y - 100}px)`,
+          transform: `translate(${x - 70}px, ${y - 90}px)`,
         }}
       >
         <ColorPicker onChange={setFill} />

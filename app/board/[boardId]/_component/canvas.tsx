@@ -39,6 +39,9 @@ interface CanvasProps {
 import { findIntersectingWithRectangle } from "@/lib/utils";
 import { penPointsToPathLayer } from "@/lib/utils";
 import { Path } from "./path";
+import { useDisableScrollBounce } from "@/app/hooks/use-disable-scroll-bounce";
+import { useEffect, useRef } from "react";
+
 const MAX_LAYERS = 100;
 export const Canvas = ({ boardId }: CanvasProps) => {
   const info = useSelf((me) => me.info);
@@ -46,6 +49,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
   const [canvasState, setCanvasState] = useState<CanvasState>({
     mode: CanvasMode.None,
   });
+  useDisableScrollBounce();
   const history = useHistory();
   const canUndo = useCanUndo();
   const canRedo = useCanRedo();
@@ -84,12 +88,24 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     [canvasState],
   );
 
-  const onWheel = useCallback((e: React.WheelEvent) => {
+const svgRef = useRef<SVGSVGElement>(null);
+
+useEffect(() => {
+  const el = svgRef.current;
+  if (!el) return;
+
+  const handleWheel = (e: WheelEvent) => {
+    e.preventDefault(); 
     setCamera((camera) => ({
       x: camera.x - e.deltaX,
       y: camera.y - e.deltaY,
     }));
-  }, []);
+  };
+
+  el.addEventListener("wheel", handleWheel, { passive: false });
+  return () => el.removeEventListener("wheel", handleWheel);
+}, []);
+
   const translateSelectedLayers = useMutation(
     ({ storage, self }, point: Point) => {
       if (canvasState.mode !== CanvasMode.Translating) {
@@ -309,8 +325,8 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     (e: React.PointerEvent) => {
       const point = pointerEventToCanvasPoint(e, camera);
       if (e.button !== 0) {
-      return; 
-    }
+        return;
+      }
 
       if (canvasState.mode === CanvasMode.Inserting) {
         return;
@@ -371,8 +387,8 @@ export const Canvas = ({ boardId }: CanvasProps) => {
       />
       <SelectionTools camera={camera} setLastUsedColor={setLastUsedColor} />
       <svg
-        className="w-screen h-screen"
-        onWheel={onWheel}
+        className="w-screen h-screen touch-none"
+        ref = {svgRef}
         onPointerMove={onPointerMove}
         onPointerLeave={onPointerLeave}
         onPointerUp={onPointerUp}
