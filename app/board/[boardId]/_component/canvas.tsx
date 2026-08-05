@@ -41,6 +41,7 @@ import { penPointsToPathLayer } from "@/lib/utils";
 import { Path } from "./path";
 import { useDisableScrollBounce } from "@/app/hooks/use-disable-scroll-bounce";
 import { useEffect, useRef } from "react";
+import { useDeleteLayers } from "./use-delete-layers";
 
 const MAX_LAYERS = 100;
 export const Canvas = ({ boardId }: CanvasProps) => {
@@ -88,24 +89,43 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     [canvasState],
   );
 
-const svgRef = useRef<SVGSVGElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
 
-useEffect(() => {
-  const el = svgRef.current;
-  if (!el) return;
+  useEffect(() => {
+    const el = svgRef.current;
+    if (!el) return;
 
-  const handleWheel = (e: WheelEvent) => {
-    e.preventDefault(); 
-    setCamera((camera) => ({
-      x: camera.x - e.deltaX,
-      y: camera.y - e.deltaY,
-    }));
-  };
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      setCamera((camera) => ({
+        x: camera.x - e.deltaX,
+        y: camera.y - e.deltaY,
+      }));
+    };
 
-  el.addEventListener("wheel", handleWheel, { passive: false });
-  return () => el.removeEventListener("wheel", handleWheel);
-}, []);
+    el.addEventListener("wheel", handleWheel, { passive: false });
+    return () => el.removeEventListener("wheel", handleWheel);
+  }, []);
 
+  const deleteLayers = useDeleteLayers();
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
+        if (e.shiftKey) {
+          history.redo();
+        } else {
+          history.undo();
+        }
+      } else if (e.key === "Backspace" || e.key === "Delete") {
+        deleteLayers();
+      }
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [history, deleteLayers]);
+  
   const translateSelectedLayers = useMutation(
     ({ storage, self }, point: Point) => {
       if (canvasState.mode !== CanvasMode.Translating) {
@@ -388,7 +408,7 @@ useEffect(() => {
       <SelectionTools camera={camera} setLastUsedColor={setLastUsedColor} />
       <svg
         className="w-screen h-screen touch-none"
-        ref = {svgRef}
+        ref={svgRef}
         onPointerMove={onPointerMove}
         onPointerLeave={onPointerLeave}
         onPointerUp={onPointerUp}
