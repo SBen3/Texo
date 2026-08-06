@@ -116,7 +116,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         } else {
           history.undo();
         }
-      } else if (e.key === "Backspace" || e.key === "Delete") {
+      } else if (e.key === "Delete") {  
         deleteLayers();
       }
     }
@@ -125,7 +125,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [history, deleteLayers]);
-  
+
   const translateSelectedLayers = useMutation(
     ({ storage, self }, point: Point) => {
       if (canvasState.mode !== CanvasMode.Translating) {

@@ -1,4 +1,4 @@
-import { Camera, Color } from "@/app/types/canvas";
+import { Camera, Color, XYWH } from "@/app/types/canvas";
 import { useSelf, useMutation } from "@/liveblocks.config";
 import { useSelectionBounds } from "@/app/hooks/use-selection-bounds";
 import { ColorPicker } from "./color-picker";
@@ -17,34 +17,43 @@ export const SelectionTools = memo(
   ({ camera, setLastUsedColor }: SelectionToolsProps) => {
     const selection = useSelf((me) => me.presence.selection);
 
-    const moveToBack = useMutation(({ storage }) => {
-      const liveLayersIds = storage.get("layerIds");
-      const indices: number[] = [];
-      const arr = Array.from(liveLayersIds);
-
-      for (let i = 0; i < arr.length; i++) {
-        if (selection.includes(arr[i])) {
-          indices.push(i);
-        }
-      }
-      for (let i=0; i<indices.length; i++){
-        liveLayersIds.move(indices[i],i)
-      }
-    }, [selection]);
-    const moveToFront = useMutation(({ storage }) => {
-      const liveLayersIds = storage.get("layerIds");
-      const indices: number[] = [];
-      const arr = Array.from(liveLayersIds);
+    const moveToBack = useMutation(
+      ({ storage }) => {
+        const liveLayersIds = storage.get("layerIds");
+        const indices: number[] = [];
+        const arr = Array.from(liveLayersIds);
 
         for (let i = 0; i < arr.length; i++) {
-        if (selection.includes(arr[i])) {
-          indices.push(i);
+          if (selection.includes(arr[i])) {
+            indices.push(i);
+          }
         }
-      }
-      for (let i=indices.length-1; i>=0; i--){
-        liveLayersIds.move(indices[i],arr.length-1-(indices.length-1-i))
-      }
-    }, [selection]);
+        for (let i = 0; i < indices.length; i++) {
+          liveLayersIds.move(indices[i], i);
+        }
+      },
+      [selection],
+    );
+    const moveToFront = useMutation(
+      ({ storage }) => {
+        const liveLayersIds = storage.get("layerIds");
+        const indices: number[] = [];
+        const arr = Array.from(liveLayersIds);
+
+        for (let i = 0; i < arr.length; i++) {
+          if (selection.includes(arr[i])) {
+            indices.push(i);
+          }
+        }
+        for (let i = indices.length - 1; i >= 0; i--) {
+          liveLayersIds.move(
+            indices[i],
+            arr.length - 1 - (indices.length - 1 - i),
+          );
+        }
+      },
+      [selection],
+    );
 
     const deleteLayers = useDeleteLayers();
     const setFill = useMutation(
@@ -65,13 +74,38 @@ export const SelectionTools = memo(
     if (!selectionBounds) {
       return;
     }
-    const x = selectionBounds.width / 2 + selectionBounds.x - camera.x;
-    const y = selectionBounds.y - camera.y;
+    function getToolbarPosition(
+      selectionBounds: XYWH,
+      camera: Camera,
+      toolbarWidth = 320,
+      toolbarHeight = 70,
+      gap = 16,
+    ) {
+      const layerLeft = selectionBounds.x + camera.x;
+      const layerTop = selectionBounds.y + camera.y - 10;
+      const layerCenterX = layerLeft + selectionBounds.width / 2;
+
+      let x = layerCenterX - toolbarWidth / 2;
+      let y = layerTop - toolbarHeight - gap;
+
+      const padding = 8;
+      x = Math.max(
+        padding,
+        Math.min(x, window.innerWidth - toolbarWidth - padding),
+      );
+      if (y < padding) {
+        y = layerTop + selectionBounds.height + gap;
+      }
+
+      return { x, y };
+    }
+    const { x, y } = getToolbarPosition(selectionBounds, camera);
+
     return (
       <div
         className="absolute z-10 flex items-center gap-2 bg-white rounded-md p-2 border-2 border-black/5"
         style={{
-          transform: `translate(${x - 70}px, ${y - 90}px)`,
+          transform: `translate(${x}px, ${y}px)`,
         }}
       >
         <ColorPicker onChange={setFill} />
