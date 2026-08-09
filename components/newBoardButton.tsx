@@ -20,12 +20,12 @@ const CreateBoard = ({orgId, disabled}: newBoardButtonProps ) => {
     if (!orgId) return;
 
     try {
-      await create({
+      const boardId = await create({
         orgId: orgId,
         title: "New Board",
       });
       toast.success("Board created!");
-      router.push(`/board/${orgId}`);
+      router.push(`/board/${boardId}`);
     } catch {
       toast.error("Failed to create board.");
     }

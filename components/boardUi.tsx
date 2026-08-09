@@ -15,9 +15,9 @@ const BoardUi = () => {
   const handleCreateBoard = async () => {
     if (!organization) return;
     await create({ orgId: organization.id, title: "New Board" })
-      .then(() => {
+      .then((boardId) => {
         toast.success("Board created successfully!");
-        router.push(`/board/${organization.id}`);
+        router.push(`/board/${boardId}`);
       })
       .catch(() => {
         toast.error("Failed to create board.");

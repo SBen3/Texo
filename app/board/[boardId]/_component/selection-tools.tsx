@@ -79,10 +79,10 @@ export const SelectionTools = memo(
       camera: Camera,
       toolbarWidth = 320,
       toolbarHeight = 70,
-      gap = 16,
+      gap = 20,
     ) {
-      const layerLeft = selectionBounds.x + camera.x;
-      const layerTop = selectionBounds.y + camera.y - 10;
+      const layerLeft = selectionBounds.x + camera.x + gap;
+      const layerTop = selectionBounds.y + camera.y - (gap + gap / 2);
       const layerCenterX = layerLeft + selectionBounds.width / 2;
 
       let x = layerCenterX - toolbarWidth / 2;
@@ -94,7 +94,7 @@ export const SelectionTools = memo(
         Math.min(x, window.innerWidth - toolbarWidth - padding),
       );
       if (y < padding) {
-        y = layerTop + selectionBounds.height + gap;
+        y = layerTop + selectionBounds.height + gap * 2;
       }
 
       return { x, y };

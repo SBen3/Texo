@@ -9,6 +9,7 @@ interface RoomProps {
   fallback: React.ReactNode;
 }
 export const Room = ({ roomId, children, fallback }: RoomProps) => {
+  if (!roomId) return 
   return (
     <RoomProvider
       id={roomId}
