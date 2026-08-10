@@ -42,7 +42,9 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 }
-html, body, :root {
+html,
+body,
+:root {
   height: 100%;
 }
 :root {
@@ -120,5 +122,22 @@ html, body, :root {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+@layer utilities {
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee {
+    animation: marquee 20s linear infinite;
+  }
+  .animate-marquee:hover {
+    animation-play-state: paused;
   }
 }

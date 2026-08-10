@@ -1,3 +1,4 @@
+
 "use client";
 
 import SearchUi from "./searchUi";
@@ -15,64 +16,69 @@ interface BoardListProps {
     favorites?: string;
   };
 }
+
 const BoardList = ({ orgId, query }: BoardListProps) => {
-  const boards = useQuery(api.boards.getBoards, { orgId , ...query });
-  if (boards === undefined) return <>
-  <h1 className="text-4xl m-2 mb-4">{query.favorites ? "Favorites Team" : "Boards Team"}</h1>
-  <div className="m-3 grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-    <CreateBoard
-          orgId={orgId}
-          disabled
-        />
-    <BoardCard.skeleton />
-    <BoardCard.skeleton />
-    <BoardCard.skeleton />
-    <BoardCard.skeleton />
-  </div>
-  </>;
-  if (!boards.length && query.search)
+  const boards = useQuery(api.boards.getBoards, { orgId, ...query });
+
+  if (boards === undefined) {
+    return (
+      <div className="m-3">
+        <h1 className="mb-4 text-4xl font-black uppercase tracking-tighter text-black">
+          {query.favorites ? "Favorites Team" : "Boards Team"}
+        </h1>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+          <CreateBoard orgId={orgId} disabled />
+          <BoardCard.skeleton />
+          <BoardCard.skeleton />
+          <BoardCard.skeleton />
+        </div>
+      </div>
+    );
+  }
+
+  if (!boards.length && query.search) {
     return (
       <div>
         <SearchUi />
       </div>
     );
-  if (!boards.length && query.favorites)
+  }
+
+  if (!boards.length && query.favorites) {
     return (
       <div>
         <FavUi />
       </div>
     );
-  if (!boards.length)
+  }
+
+  if (!boards.length) {
     return (
       <div>
         <BoardUi />
       </div>
     );
+  }
 
   return (
     <div className="m-3">
-      <h1 className="text-4xl m-2 mb-4">{query.favorites ? "Favorites Team" : "Boards Team"}</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        <CreateBoard
-          orgId={orgId}
-          disabled= {false} 
-        />
-        {boards.map(
-          (board) => (
-            (
-              <BoardCard
-                key={board._id}
-                id={board._id}
-                title={board.title}
-                imageUrl={board.imageUrl}
-                authorName={board.authorName}
-                createdAt={board._creationTime}
-                orgId={board.orgId}
-                isFavorite={board.isFavorite} 
-              />
-            )
-          ),
-        )}
+      <h1 className="mb-4 text-4xl font-black uppercase tracking-tighter text-black">
+        {query.favorites ? "Favorites Team" : "Boards Team"}
+      </h1>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        <CreateBoard orgId={orgId} disabled={false} />
+        {boards.map((board) => (
+          <BoardCard
+            key={board._id}
+            id={board._id}
+            title={board.title}
+            imageUrl={board.imageUrl}
+            authorName={board.authorName}
+            createdAt={board._creationTime}
+            orgId={board.orgId}
+            isFavorite={board.isFavorite}
+          />
+        ))}
       </div>
     </div>
   );

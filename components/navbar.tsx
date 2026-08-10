@@ -1,32 +1,57 @@
+
 import { UserButton, OrganizationSwitcher } from "@clerk/nextjs";
 import SearchInput from "./searchInput";
 import InviteButton from "./invite-button";
 
 const NavBar = () => {
   return (
-    <>
-      <div className="flex justify-between">
-        <div className="hidden p-2 lg:flex lg:justify-between">
-        <SearchInput />
+    <div className="flex items-center justify-between border-b-4 border-black bg-white px-4 py-3 shadow-[0px_4px_0px_0px_black]">
+      {/* Search - desktop */}
+      <div className="hidden lg:flex lg:items-center lg:gap-4">
+        <div className="border-2 border-black bg-[#F0F0F0]">
+          <SearchInput />
+        </div>
       </div>
-      <div className="p-2 flex justify-between lg:hidden ">
+
+      {/* Org switcher - mobile */}
+      <div className="flex items-center gap-2 p-2 lg:hidden">
         <OrganizationSwitcher
           appearance={{
             elements: {
               rootBox:
-                "bg-gray-300 hover:bg-gray-400 transition rounded-md border-2 border-gray-400",
-              organizationSwitcherTrigger: "text-black",
-              organizationPreviewTextContainer: "text-black",
+                "bg-[#F0C020] hover:bg-[#F0C020]/90 transition-colors duration-200 rounded-none border-2 border-black shadow-[3px_3px_0px_0px_black]",
+              organizationSwitcherTrigger:
+                "text-black font-bold uppercase tracking-wide px-2 py-1",
+              organizationPreviewTextContainer: "text-black font-bold",
             },
           }}
         />
       </div>
-      <div className="flex gap-2">
+
+      {/* Actions */}
+      <div className="flex items-center gap-3">
+        <div
+          className="[&>button]:rounded-none [&>button]:border-2 [&>button]:border-black
+                     [&>button]:bg-[#D02020] [&>button]:text-white [&>button]:font-bold
+                     [&>button]:uppercase [&>button]:tracking-wider [&>button]:px-4 [&>button]:py-2
+                     [&>button]:shadow-[3px_3px_0px_0px_black] [&>button]:transition-transform
+                     [&>button]:duration-200 [&>button]:active:translate-x-[2px]
+                     [&>button]:active:translate-y-[2px] [&>button]:active:shadow-none"
+        >
           <InviteButton />
-          <UserButton />
+        </div>
+
+        <div className="rounded-full border-2 border-black shadow-[3px_3px_0px_0px_black]">
+          <UserButton
+            appearance={{
+              elements: {
+                avatarBox: "h-9 w-9 rounded-full",
+              },
+            }}
+          />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
