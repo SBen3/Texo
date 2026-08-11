@@ -37,7 +37,7 @@ const BoardUi = () => {
         <p className="font-medium text-black/70">Create a board to get started.</p>
         <button
           onClick={handleCreateBoard}
-          className="mt-2 border-2 border-black bg-[#D02020] px-4 py-2 text-xs font-bold uppercase tracking-wider text-white shadow-[3px_3px_0px_0px_black] transition-all duration-200 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+          className="mt-2 border-2 border-black bg-[#D02020] px-4 py-2 text-xs font-bold uppercase tracking-wider text-white shadow-[3px_3px_0px_0px_black] transition-all duration-200 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
         >
           Create Board
         </button>

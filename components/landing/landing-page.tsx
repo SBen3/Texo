@@ -269,7 +269,7 @@ export default function LandingPage() {
           </p>
         </div>
 
-        <div className="relative bg-[#F0C020] min-h-[320px] lg:min-h-0 overflow-hidden border-t-4 lg:border-t-0 lg:border-l-4 border-black">
+        <div className="relative bg-[#F0C020] min-h-80 lg:min-h-0 overflow-hidden border-t-4 lg:border-t-0 lg:border-l-4 border-black">
           <div className="absolute left-[10%] top-[15%] w-28 h-28 sm:w-40 sm:h-40 rounded-full bg-[#1040C0] border-4 border-black" />
           <div className="absolute right-[12%] top-[10%] w-24 h-24 sm:w-32 sm:h-32 bg-[purple] border-4 border-black rotate-12" />
           <div className="absolute left-[30%] bottom-[10%] -translate-x-1/2 w-32 h-32 sm:w-44 sm:h-44 bg-white border-4 border-black" />
@@ -286,9 +286,9 @@ export default function LandingPage() {
           Trusted by teams at
         </p>
 
-        <div className="max-w-5xl mx-auto overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]">
+        <div className="max-w-5xl mx-auto overflow-hidden mask-[linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]">
           {/* Repeating 4x ensures smooth continuous infinite scrolling */}
-          <div className="flex w-max animate-marquee gap-16 hover:[animation-play-state:paused] cursor-pointer">
+          <div className="flex w-max animate-marquee gap-16 hover:paused cursor-pointer">
             {[...TRUSTED_BY, ...TRUSTED_BY, ...TRUSTED_BY, ...TRUSTED_BY].map(
               (name, i) => (
                 <span

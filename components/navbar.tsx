@@ -35,8 +35,8 @@ const NavBar = () => {
                      [&>button]:bg-[#D02020] [&>button]:text-white [&>button]:font-bold
                      [&>button]:uppercase [&>button]:tracking-wider [&>button]:px-4 [&>button]:py-2
                      [&>button]:shadow-[3px_3px_0px_0px_black] [&>button]:transition-transform
-                     [&>button]:duration-200 [&>button]:active:translate-x-[2px]
-                     [&>button]:active:translate-y-[2px] [&>button]:active:shadow-none"
+                     [&>button]:duration-200 [&>button]:active:translate-x-0.5
+                     [&>button]:active:translate-y-0.5 [&>button]:active:shadow-none"
         >
           <InviteButton />
         </div>

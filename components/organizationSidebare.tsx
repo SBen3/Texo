@@ -48,7 +48,7 @@ const OrgSideBare = () => {
       <nav className="flex flex-col gap-3">
         <Link href="/">
           <button
-            className={`flex w-full items-center gap-2 border-2 border-black px-3 py-2 text-xs font-bold uppercase tracking-widest shadow-[3px_3px_0px_0px_black] transition-all duration-200 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${
+            className={`flex w-full items-center gap-2 border-2 border-black px-3 py-2 text-xs font-bold uppercase tracking-widest shadow-[3px_3px_0px_0px_black] transition-all duration-200 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none ${
               !favorites ? "bg-[#D02020] text-white" : "bg-white text-black"
             }`}
           >
@@ -59,7 +59,7 @@ const OrgSideBare = () => {
 
         <Link href={{ pathname: "/", query: { favorites: "true" } }}>
           <button
-            className={`flex w-full items-center gap-2 border-2 border-black px-3 py-2 text-xs font-bold uppercase tracking-widest shadow-[3px_3px_0px_0px_black] transition-all duration-200 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${
+            className={`flex w-full items-center gap-2 border-2 border-black px-3 py-2 text-xs font-bold uppercase tracking-widest shadow-[3px_3px_0px_0px_black] transition-all duration-200 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none ${
               favorites ? "bg-[#F0C020] text-black" : "bg-white text-black"
             }`}
           >
