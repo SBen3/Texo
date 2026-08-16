@@ -58,13 +58,6 @@ export const Canvas = ({ boardId }: CanvasProps) => {
   const MIN_ZOOM = 0.25;
   const MAX_ZOOM = 3;
 
-/*   const zoomIn = useCallback(() => {
-    setCamera((camera) => ({
-      ...camera,
-      scale: Math.min(camera.scale * 1.1, MAX_ZOOM),
-    }));
-  }, []); */
-
   const zoomOut = useCallback(() => {
     setCamera((camera) => ({
       ...camera,
@@ -80,7 +73,6 @@ export const Canvas = ({ boardId }: CanvasProps) => {
   const onTouchStart = useCallback(
     (e: React.TouchEvent) => {
       if (e.touches.length === 2) {
-        // Stop single-finger selection mode when zooming/panning with 2 fingers
         setCanvasState({ mode: CanvasMode.None });
 
         const t1 = e.touches[0];
@@ -116,14 +108,12 @@ export const Canvas = ({ boardId }: CanvasProps) => {
 
       if (touchStartRef.current.dist === 0) return;
 
-      // Calculate Zoom Factor
       const scaleFactor = currentDist / touchStartRef.current.dist;
       const newScale = Math.min(
         MAX_ZOOM,
         Math.max(MIN_ZOOM, touchStartRef.current.camera.scale * scaleFactor),
       );
 
-      // Calculate Panning Offset
       const deltaX = currentCenter.x - touchStartRef.current.center.x;
       const deltaY = currentCenter.y - touchStartRef.current.center.y;
 
@@ -146,7 +136,6 @@ const onTouchEnd = useMutation(({ setMyPresence }) => {
     }));
   }, []);
   const onWheel = useCallback((e: React.WheelEvent) => {
-    // 1. Pinch-to-zoom or Ctrl + Scroll -> Zoom
     if (e.ctrlKey) {
       e.preventDefault();
       setCamera((prev) => {
@@ -160,7 +149,6 @@ const onTouchEnd = useMutation(({ setMyPresence }) => {
       return;
     }
 
-    // 2. Standard Scroll / Trackpad Pan -> Move X and Y
     setCamera((prev) => ({
       ...prev,
       x: prev.x - e.deltaX,
@@ -242,7 +230,6 @@ const translateSelectedLayers = useMutation(
   ({ storage, self }, point: Point) => {
     if (canvasState.mode !== CanvasMode.Translating || !canvasState.current) return;
 
-    // Calculate actual delta on the canvas grid
     const offset = {
       x: point.x - canvasState.current.x,
       y: point.y - canvasState.current.y,
@@ -250,7 +237,6 @@ const translateSelectedLayers = useMutation(
 
     const liveLayers = storage.get("layers");
 
-    // Move each selected layer by the offset
     for (const id of self.presence.selection) {
       const layer = liveLayers.get(id);
       if (layer) {
@@ -260,8 +246,6 @@ const translateSelectedLayers = useMutation(
         });
       }
     }
-
-    // Update current reference point to avoid exponential movement
     setCanvasState({
       mode: CanvasMode.Translating,
       current: point,
@@ -324,10 +308,8 @@ const onPointerMove = useMutation(
   ({ setMyPresence }, e: React.PointerEvent) => {
     e.preventDefault();
 
-    // Clear previous timeout on active movement
     if (cursorTimeoutRef.current) clearTimeout(cursorTimeoutRef.current);
 
-    // 1. Mobile Canvas Panning Mode
     if (canvasState.mode === CanvasMode.Translating && canvasState.current) {
       const deltaX = e.clientX - canvasState.current.x;
       const deltaY = e.clientY - canvasState.current.y;
@@ -346,11 +328,9 @@ const onPointerMove = useMutation(
       return;
     }
 
-    // 2. Broadcast cursor coordinates during touch
     const current = pointerEventToCanvasPoint(e, camera);
     setMyPresence({ cursor: current });
 
-    // 3. Hide cursor automatically if touch stops moving for 1 second (Mobile fix)
     cursorTimeoutRef.current = setTimeout(() => {
       setMyPresence({ cursor: null });
     }, 1000);
@@ -442,7 +422,6 @@ const onPointerUp = useMutation(
   ({ setMyPresence }, e: React.PointerEvent) => {
     const point = pointerEventToCanvasPoint(e, camera);
     
-    // Clear cursor position immediately on release
     setMyPresence({ cursor: null });
 
     if (canvasState.mode === CanvasMode.Translating) {
@@ -489,7 +468,7 @@ const onPointerUp = useMutation(
 
     setCanvasState({
       mode: CanvasMode.Translating,
-      current: { x: e.clientX, y: e.clientY }, // Track starting touch position
+      current: { x: e.clientX, y: e.clientY },
     });
     return;
   }
@@ -525,17 +504,15 @@ const onLayerPointerDown = useMutation(
   ({ self, setMyPresence }, e: React.PointerEvent, layerId: string) => {
     if (canvasState.mode === CanvasMode.Pencil) return;
 
-    // Prevent multi-touch interference on mobile
     if (e.pointerType === "touch" && !e.isPrimary) return;
 
     const point = pointerEventToCanvasPoint(e, camera);
 
     setCanvasState({
-      mode: CanvasMode.Translating, // Or CanvasMode.Dragging
+      mode: CanvasMode.Translating, 
       current: point,
     });
 
-    // Translate/select current layer
     if (!self.presence.selection.includes(layerId)) {
       setMyPresence({ selection: [layerId] }, { addToHistory: true });
     }

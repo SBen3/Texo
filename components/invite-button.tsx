@@ -6,15 +6,16 @@ import { useClerk } from "@clerk/nextjs";
 const InviteButton = () => {
   const { openOrganizationProfile } = useClerk();
   return (
-    <>
+    <div className="flex w-full h-full p-1 pr-2 bg-gray-300 text-black rounded-md hover:bg-gray-400 transition cursor-pointer 
+    ">
+            <Plus size={15} className="inline-block m-2" />
       <div
-        className="text-sm h-8 px-3 pt-1 mt-3 bg-gray-300 text-black rounded-md hover:bg-gray-400 transition cursor-pointer"
+        className="flex self-center pb-1 text-xs md:text-sm"
         onClick={() => openOrganizationProfile()}
       >
-        <Plus size={15} className="inline-block mr-2 mb-1" />
         Invite Members
       </div>
-    </>
+    </div>
   );
 };
 export default InviteButton;

@@ -20,6 +20,7 @@ export const ToolButton = ({
   return (
     <Hint label={label} sideOffset={10} side="right">
       <Button
+        className="rounded-md"
         disabled={isDisabled}
         onClick={onClick}
         size="icon"

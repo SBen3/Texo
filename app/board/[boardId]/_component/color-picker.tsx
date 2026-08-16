@@ -33,19 +33,16 @@ interface colorButtonProp {
   onClick: (color: Color) => void;
   color: Color;
 }
-
 const ColorButton = ({ onClick, color }: colorButtonProp) => {
   return (
-    <>
-      <Button
-        className="flex justify-center items-center h-6 w-6 p-0 rounded-2xl hover:opacity-75 "
-        onClick={() => onClick(color)}
-      >
-        <div
-          className="rounded-md w-6 h-6"
-          style={{ background: colorToCss(color) }}
-        ></div>
-      </Button>
-    </>
+    <button
+      className="flex justify-center items-center w-6 h-6 p-0 rounded-md hover:opacity-75 transition"
+      onClick={() => onClick(color)}
+    >
+      <div
+        className="rounded-md w-6 h-6"
+        style={{ background: colorToCss(color) }}
+      />
+    </button>
   );
 };

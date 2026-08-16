@@ -45,7 +45,7 @@ const NavBar = () => {
           <UserButton
             appearance={{
               elements: {
-                avatarBox: "h-9 w-9 rounded-full",
+                avatarBox: "rounded-full",
               },
             }}
           />

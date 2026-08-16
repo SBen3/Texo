@@ -22,8 +22,8 @@ const buttonVariants = cva(
         ghost:
           "border-transparent text-foreground hover:bg-muted",
         link: "border-transparent text-primary underline-offset-4 hover:underline",
-        board: "border-transparent hover:bg-green-500/10 hover:text-green-500/70",
-        boardActive: "border-transparent bg-green-500/10 text-green-500/70",
+        board: "border-transparent hover:bg-orange-500/10 hover:text-orange-500/70 hover:rounded-md text-xs",
+        boardActive: "border-transparent bg-orange-500/10 text-orange-500/70 rounded-md",
       },
       shape: {
         square: "rounded-none",

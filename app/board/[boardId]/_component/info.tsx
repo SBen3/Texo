@@ -37,8 +37,8 @@ export const Info = ({ boardId }: InfoProp) => {
         <Hint label="Go To Boards" sideOffset={10}>
           <Link href="/">
             <div className="flex flex-row items-center gap-2">
-              <Image src="/green.svg" alt="board logo" width={30} height={30} />
-              <span className={`${poppin.className}`}>Texo</span>
+              <Image src="/icon.png" alt="board logo" width={30} height={30} />
+              <span className={`${poppin.className} text-xs`}>Texo</span>
             </div>
           </Link>
         </Hint>
@@ -46,7 +46,7 @@ export const Info = ({ boardId }: InfoProp) => {
       <TapSeparator />
       <Button variant="board" onClick={() => onOpen(data._id, data.title)}>
         <Hint label="board name" sideOffset={10}>
-          <div>{data.title}</div>
+          <div className="text-xs">{data.title}</div>
         </Hint>
       </Button>
       <TapSeparator />
