@@ -26,11 +26,11 @@ export function cn(...inputs: ClassValue[]) {
 }
 export const pointerEventToCanvasPoint = (
   e: React.PointerEvent,
-  camera: Camera,
-) => {
+  camera: Camera
+): Point => {
   return {
-    x: Math.round(e.clientX) - camera.x,
-    y: Math.round(e.clientY) - camera.y,
+    x: (e.clientX - camera.x) / camera.scale,
+    y: (e.clientY - camera.y) / camera.scale,
   };
 };
 export function colorToCss(color: Color) {

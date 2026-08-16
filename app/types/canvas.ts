@@ -7,6 +7,7 @@ export type Color = {
 export type Camera = {
   x: number;
   y: number;
+  scale: number;
 };
 
 export enum LayerType {
@@ -44,6 +45,7 @@ export enum CanvasMode {
   Inserting,
   Resizing,
   Pencil,
+  Panning,
 }
 
 export type CanvasState =
@@ -60,7 +62,8 @@ export type CanvasState =
         | LayerType.Note;
     }
   | { mode: CanvasMode.Pencil }
-  | { mode: CanvasMode.Resizing; initialBounds: XYWH; corner: Side };
+  | { mode: CanvasMode.Resizing; initialBounds: XYWH; corner: Side }
+  | { mode: CanvasMode.Panning; current: Point }; 
 
 export type Layer =
   | RectangleLayer
@@ -68,7 +71,7 @@ export type Layer =
   | PathLayer
   | TextLayer
   | NoteLayer;
-  
+
 export type RectangleLayer = {
   type: LayerType.Rectangle;
   x: number;
@@ -119,4 +122,3 @@ export type NoteLayer = {
   fill: Color;
   value?: string;
 };
-

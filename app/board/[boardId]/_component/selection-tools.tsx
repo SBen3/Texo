@@ -1,4 +1,4 @@
-import { Camera, Color, XYWH } from "@/app/types/canvas";
+import { Camera, Color, XYWH, RectangleLayer } from "@/app/types/canvas";
 import { useSelf, useMutation } from "@/liveblocks.config";
 import { useSelectionBounds } from "@/app/hooks/use-selection-bounds";
 import { ColorPicker } from "./color-picker";
@@ -74,31 +74,34 @@ export const SelectionTools = memo(
     if (!selectionBounds) {
       return;
     }
-    function getToolbarPosition(
-      selectionBounds: XYWH,
-      camera: Camera,
-      toolbarWidth = 320,
-      toolbarHeight = 70,
-      gap = 20,
-    ) {
-      const layerLeft = selectionBounds.x + camera.x + gap;
-      const layerTop = selectionBounds.y + camera.y - (gap + gap / 2);
-      const layerCenterX = layerLeft + selectionBounds.width / 2;
+    const getToolbarPosition = (selectionBounds: XYWH, camera: Camera) => {
+      const toolbarWidth = 290;
+      const toolbarHeight = 105;
+      const gap = 8;
+      const padding = 8;
+
+      const screenX = selectionBounds.x * camera.scale + camera.x;
+      const screenY = selectionBounds.y * camera.scale + camera.y;
+
+      const screenWidth = selectionBounds.width * camera.scale;
+      const screenHeight = selectionBounds.height * camera.scale;
+
+      const layerCenterX = screenX + screenWidth / 2;
+      const layerTop = screenY;
 
       let x = layerCenterX - toolbarWidth / 2;
       let y = layerTop - toolbarHeight - gap;
 
-      const padding = 8;
       x = Math.max(
         padding,
         Math.min(x, window.innerWidth - toolbarWidth - padding),
       );
       if (y < padding) {
-        y = layerTop + selectionBounds.height + gap * 2;
+        y = screenY + screenHeight + gap;
       }
 
       return { x, y };
-    }
+    };
     const { x, y } = getToolbarPosition(selectionBounds, camera);
 
     return (

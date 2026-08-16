@@ -54,8 +54,119 @@ export const Canvas = ({ boardId }: CanvasProps) => {
   const history = useHistory();
   const canUndo = useCanUndo();
   const canRedo = useCanRedo();
-  const [camera, setCamera] = useState<Camera>({ x: 0, y: 0 });
+  const [camera, setCamera] = useState<Camera>({ x: 0, y: 0, scale: 1 });
+  const MIN_ZOOM = 0.25;
+  const MAX_ZOOM = 3;
 
+/*   const zoomIn = useCallback(() => {
+    setCamera((camera) => ({
+      ...camera,
+      scale: Math.min(camera.scale * 1.1, MAX_ZOOM),
+    }));
+  }, []); */
+
+  const zoomOut = useCallback(() => {
+    setCamera((camera) => ({
+      ...camera,
+      scale: Math.max(camera.scale / 1.1, MIN_ZOOM),
+    }));
+  }, []);
+  const touchStartRef = useRef<{
+    dist: number;
+    camera: Camera;
+    center: Point;
+  } | null>(null);
+
+  const onTouchStart = useCallback(
+    (e: React.TouchEvent) => {
+      if (e.touches.length === 2) {
+        // Stop single-finger selection mode when zooming/panning with 2 fingers
+        setCanvasState({ mode: CanvasMode.None });
+
+        const t1 = e.touches[0];
+        const t2 = e.touches[1];
+
+        const dist = Math.hypot(
+          t1.clientX - t2.clientX,
+          t1.clientY - t2.clientY,
+        );
+        const center = {
+          x: (t1.clientX + t2.clientX) / 2,
+          y: (t1.clientY + t2.clientY) / 2,
+        };
+
+        touchStartRef.current = { dist, camera: { ...camera }, center };
+      }
+    },
+    [camera],
+  );
+  const onTouchMove = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 2 && touchStartRef.current) {
+      const t1 = e.touches[0];
+      const t2 = e.touches[1];
+
+      const currentDist = Math.hypot(
+        t1.clientX - t2.clientX,
+        t1.clientY - t2.clientY,
+      );
+      const currentCenter = {
+        x: (t1.clientX + t2.clientX) / 2,
+        y: (t1.clientY + t2.clientY) / 2,
+      };
+
+      if (touchStartRef.current.dist === 0) return;
+
+      // Calculate Zoom Factor
+      const scaleFactor = currentDist / touchStartRef.current.dist;
+      const newScale = Math.min(
+        MAX_ZOOM,
+        Math.max(MIN_ZOOM, touchStartRef.current.camera.scale * scaleFactor),
+      );
+
+      // Calculate Panning Offset
+      const deltaX = currentCenter.x - touchStartRef.current.center.x;
+      const deltaY = currentCenter.y - touchStartRef.current.center.y;
+
+      setCamera({
+        x: touchStartRef.current.camera.x + deltaX,
+        y: touchStartRef.current.camera.y + deltaY,
+        scale: newScale,
+      });
+    }
+  }, []);
+
+const onTouchEnd = useMutation(({ setMyPresence }) => {
+  touchStartRef.current = null;
+  setMyPresence({ cursor: null });
+}, []);
+  const resetZoom = useCallback(() => {
+    setCamera((camera) => ({
+      ...camera,
+      scale: 1,
+    }));
+  }, []);
+  const onWheel = useCallback((e: React.WheelEvent) => {
+    // 1. Pinch-to-zoom or Ctrl + Scroll -> Zoom
+    if (e.ctrlKey) {
+      e.preventDefault();
+      setCamera((prev) => {
+        const zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
+        const newScale = Math.min(
+          MAX_ZOOM,
+          Math.max(MIN_ZOOM, prev.scale * zoomFactor),
+        );
+        return { ...prev, scale: newScale };
+      });
+      return;
+    }
+
+    // 2. Standard Scroll / Trackpad Pan -> Move X and Y
+    setCamera((prev) => ({
+      ...prev,
+      x: prev.x - e.deltaX,
+      y: prev.y - e.deltaY,
+    }));
+  }, []);
   const onResizeHandlePointerDown = useCallback(
     (corner: Side, initialBounds: XYWH) => {
       history.pause();
@@ -100,6 +211,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
       setCamera((camera) => ({
         x: camera.x - e.deltaX,
         y: camera.y - e.deltaY,
+        scale: camera.scale,
       }));
     };
 
@@ -116,7 +228,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         } else {
           history.undo();
         }
-      } else if (e.key === "Delete") {  
+      } else if (e.key === "Delete") {
         deleteLayers();
       }
     }
@@ -126,34 +238,37 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     };
   }, [history, deleteLayers]);
 
-  const translateSelectedLayers = useMutation(
-    ({ storage, self }, point: Point) => {
-      if (canvasState.mode !== CanvasMode.Translating) {
-        return;
+const translateSelectedLayers = useMutation(
+  ({ storage, self }, point: Point) => {
+    if (canvasState.mode !== CanvasMode.Translating || !canvasState.current) return;
+
+    // Calculate actual delta on the canvas grid
+    const offset = {
+      x: point.x - canvasState.current.x,
+      y: point.y - canvasState.current.y,
+    };
+
+    const liveLayers = storage.get("layers");
+
+    // Move each selected layer by the offset
+    for (const id of self.presence.selection) {
+      const layer = liveLayers.get(id);
+      if (layer) {
+        layer.update({
+          x: layer.get("x") + offset.x,
+          y: layer.get("y") + offset.y,
+        });
       }
+    }
 
-      const offset = {
-        x: point.x - canvasState.current.x,
-        y: point.y - canvasState.current.y,
-      };
-
-      const liveLayers = storage.get("layers");
-
-      for (const id of self.presence.selection) {
-        const layer = liveLayers.get(id);
-
-        if (layer) {
-          layer.update({
-            x: layer.get("x") + offset.x,
-            y: layer.get("y") + offset.y,
-          });
-        }
-      }
-
-      setCanvasState({ mode: CanvasMode.Translating, current: point });
-    },
-    [canvasState],
-  );
+    // Update current reference point to avoid exponential movement
+    setCanvasState({
+      mode: CanvasMode.Translating,
+      current: point,
+    });
+  },
+  [canvasState]
+);
   const startMultiSelection = useCallback((current: Point, origin: Point) => {
     if (Math.abs(current.x - origin.x + (current.y - origin.y))) {
       setCanvasState({
@@ -204,36 +319,57 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     },
     [canvasState.mode],
   );
-  const onPointerMove = useMutation(
-    ({ setMyPresence }, e: React.PointerEvent) => {
-      e.preventDefault();
-      const current = pointerEventToCanvasPoint(e, camera);
-      setMyPresence({ cursor: current });
-      if (canvasState.mode === CanvasMode.Pressing) {
-        startMultiSelection(current, canvasState.origin);
-      } else if (canvasState.mode === CanvasMode.SelectionNet) {
-        updateSelectionNet(current, canvasState.origin);
-      } else if (canvasState.mode === CanvasMode.Translating) {
-        translateSelectedLayers(current);
-      } else if (canvasState.mode === CanvasMode.Resizing) {
-        resizeSelectedLayer(current);
-      } else if (canvasState.mode === CanvasMode.Pencil) {
-        continueDrawing(current, e);
-      }
-    },
-    [
-      camera,
-      canvasState,
-      startMultiSelection,
-      updateSelectionNet,
-      translateSelectedLayers,
-      resizeSelectedLayer,
-      continueDrawing,
-    ],
-  );
-  const onPointerLeave = useMutation(({ setMyPresence }) => {
-    setMyPresence({ cursor: null });
-  }, []);
+  const cursorTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+const onPointerMove = useMutation(
+  ({ setMyPresence }, e: React.PointerEvent) => {
+    e.preventDefault();
+
+    // Clear previous timeout on active movement
+    if (cursorTimeoutRef.current) clearTimeout(cursorTimeoutRef.current);
+
+    // 1. Mobile Canvas Panning Mode
+    if (canvasState.mode === CanvasMode.Translating && canvasState.current) {
+      const deltaX = e.clientX - canvasState.current.x;
+      const deltaY = e.clientY - canvasState.current.y;
+
+      setCamera((prev) => ({
+        ...prev,
+        x: prev.x + deltaX,
+        y: prev.y + deltaY,
+      }));
+
+      setCanvasState({
+        mode: CanvasMode.Translating,
+        current: { x: e.clientX, y: e.clientY },
+      });
+      
+      return;
+    }
+
+    // 2. Broadcast cursor coordinates during touch
+    const current = pointerEventToCanvasPoint(e, camera);
+    setMyPresence({ cursor: current });
+
+    // 3. Hide cursor automatically if touch stops moving for 1 second (Mobile fix)
+    cursorTimeoutRef.current = setTimeout(() => {
+      setMyPresence({ cursor: null });
+    }, 1000);
+
+    if (canvasState.mode === CanvasMode.Pressing) {
+      startMultiSelection(current, canvasState.origin);
+    } else if (canvasState.mode === CanvasMode.SelectionNet) {
+      updateSelectionNet(current, canvasState.origin);
+    } else if (canvasState.mode === CanvasMode.Resizing) {
+      resizeSelectedLayer(current);
+    } else if (canvasState.mode === CanvasMode.Pencil) {
+      continueDrawing(current, e);
+    }
+  },
+  [canvasState, camera]
+);
+const onPointerLeave = useMutation(({ setMyPresence }) => {
+  setMyPresence({ cursor: null });
+}, []);
   const [lastUsedColor, setLastUsedColor] = useState<Color>({
     r: 200,
     g: 200,
@@ -302,36 +438,41 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     },
     [lastUsedColor],
   );
-  const onPointerUp = useMutation(
-    ({}, e: React.PointerEvent) => {
-      const point = pointerEventToCanvasPoint(e, camera);
+const onPointerUp = useMutation(
+  ({ setMyPresence }, e: React.PointerEvent) => {
+    const point = pointerEventToCanvasPoint(e, camera);
+    
+    // Clear cursor position immediately on release
+    setMyPresence({ cursor: null });
 
-      if (canvasState.mode === CanvasMode.Inserting) {
-        insertLayer(canvasState.layerType, point);
-      } else if (
-        canvasState.mode === CanvasMode.Pressing ||
-        canvasState.mode === CanvasMode.None
-      ) {
-        unSelectedLayers();
-        setCanvasState({ mode: CanvasMode.None });
-      } else if (canvasState.mode === CanvasMode.Pencil) {
-        insertPath();
-      } else {
-        setCanvasState({ mode: CanvasMode.None });
-      }
+    if (canvasState.mode === CanvasMode.Translating) {
+      setCanvasState({ mode: CanvasMode.None });
+    } else if (canvasState.mode === CanvasMode.Inserting) {
+      insertLayer(canvasState.layerType, point);
+    } else if (
+      canvasState.mode === CanvasMode.Pressing ||
+      canvasState.mode === CanvasMode.None
+    ) {
+      unSelectedLayers();
+      setCanvasState({ mode: CanvasMode.None });
+    } else if (canvasState.mode === CanvasMode.Pencil) {
+      insertPath();
+    } else {
+      setCanvasState({ mode: CanvasMode.None });
+    }
 
-      history.resume();
-    },
-    [
-      camera,
-      canvasState,
-      setCanvasState,
-      history,
-      insertLayer,
-      unSelectedLayers,
-      insertPath,
-    ],
-  );
+    history.resume();
+  },
+  [
+    camera,
+    canvasState,
+    setCanvasState,
+    history,
+    insertLayer,
+    unSelectedLayers,
+    insertPath,
+  ]
+);
   const startDrawing = useMutation(
     ({ setMyPresence }, point: Point, pressure: number) => {
       setMyPresence({
@@ -343,6 +484,15 @@ export const Canvas = ({ boardId }: CanvasProps) => {
   );
   const onPointerDown = useCallback(
     (e: React.PointerEvent) => {
+ if (e.pointerType === "touch") {
+    if (!e.isPrimary) return;
+
+    setCanvasState({
+      mode: CanvasMode.Translating,
+      current: { x: e.clientX, y: e.clientY }, // Track starting touch position
+    });
+    return;
+  }
       const point = pointerEventToCanvasPoint(e, camera);
       if (e.button !== 0) {
         return;
@@ -371,28 +521,27 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     }
     return layerIdsToColorSelection;
   }, [selections]);
-  const onLayerPointerDown = useMutation(
-    ({ self, setMyPresence }, e: React.PointerEvent, layerId: string) => {
-      if (
-        canvasState.mode === CanvasMode.Pencil ||
-        canvasState.mode === CanvasMode.Inserting
-      ) {
-        return;
-      }
+const onLayerPointerDown = useMutation(
+  ({ self, setMyPresence }, e: React.PointerEvent, layerId: string) => {
+    if (canvasState.mode === CanvasMode.Pencil) return;
 
-      history.pause();
-      e.stopPropagation();
+    // Prevent multi-touch interference on mobile
+    if (e.pointerType === "touch" && !e.isPrimary) return;
 
-      const point = pointerEventToCanvasPoint(e, camera);
+    const point = pointerEventToCanvasPoint(e, camera);
 
-      if (!self.presence.selection.includes(layerId)) {
-        setMyPresence({ selection: [layerId] }, { addToHistory: true });
-      }
+    setCanvasState({
+      mode: CanvasMode.Translating, // Or CanvasMode.Dragging
+      current: point,
+    });
 
-      setCanvasState({ mode: CanvasMode.Translating, current: point });
-    },
-    [setCanvasState, camera, history],
-  );
+    // Translate/select current layer
+    if (!self.presence.selection.includes(layerId)) {
+      setMyPresence({ selection: [layerId] }, { addToHistory: true });
+    }
+  },
+  [canvasState.mode, camera]
+);
   return (
     <div>
       <Info boardId={boardId} />
@@ -409,12 +558,21 @@ export const Canvas = ({ boardId }: CanvasProps) => {
       <svg
         className="w-screen h-screen touch-none"
         ref={svgRef}
-        onPointerMove={onPointerMove}
-        onPointerLeave={onPointerLeave}
-        onPointerUp={onPointerUp}
+        style={{ touchAction: "none" }}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+        onWheel={onWheel}
         onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
       >
-        <g style={{ transform: `translate(${camera.x}px, ${camera.y}px)` }}>
+        <g
+          style={{
+            transform: `translate(${camera.x}px, ${camera.y}px) scale(${camera.scale})`,
+            transformOrigin: "0 0",
+          }}
+        >
           {layerIds.map((layerId) => (
             <LayerPreview
               key={layerId}
