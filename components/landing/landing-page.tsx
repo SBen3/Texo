@@ -270,11 +270,11 @@ export default function LandingPage() {
         </div>
 
         <div className="relative bg-[#F0C020] min-h-80 lg:min-h-0 overflow-hidden border-t-4 lg:border-t-0 lg:border-l-4 border-black">
-          <div className="absolute left-[10%] top-[15%] w-28 h-28 sm:w-40 sm:h-40 rounded-full bg-[#1040C0] border-4 border-black" />
-          <div className="absolute right-[12%] top-[10%] w-24 h-24 sm:w-32 sm:h-32 bg-[purple] border-4 border-black rotate-12" />
-          <div className="absolute left-[30%] bottom-[10%] -translate-x-1/2 w-32 h-32 sm:w-44 sm:h-44 bg-white border-4 border-black" />
+          <div className="absolute left-[15%] top-[10%] w-28 h-28 sm:w-40 sm:h-40 rounded-full bg-[#1040C0] border-4 border-black" />
+          <div className="absolute right-[20%] top-[10%] w-24 h-24 sm:w-32 sm:h-32 bg-[purple] border-4 border-black rotate-12" />
+          <div className="absolute left-[30%] bottom-[20%] -translate-x-1/2 w-32 h-32 sm:w-44 sm:h-44 bg-white border-4 -rotate-12 border-black" />
           <div
-            className="absolute right-[15%] bottom-[25%] w-20 h-20 sm:w-28 sm:h-28 bg-[red] border-4 border-black"
+            className="absolute right-[20%] bottom-[30%] w-20 h-20 sm:w-28 sm:h-28 bg-[red] border-4 border-black -rotate-3"
             style={{ clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)" }}
           />
         </div>

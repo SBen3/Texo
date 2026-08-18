@@ -477,27 +477,28 @@ export const Canvas = ({ boardId }: CanvasProps) => {
   );
   const onPointerDown = useCallback(
     (e: React.PointerEvent) => {
+      const point = pointerEventToCanvasPoint(e, camera);
+
       if (e.pointerType === "touch") {
         if (!e.isPrimary) return;
 
-        setCanvasState({
-          mode: CanvasMode.Translating,
-          current: { x: e.clientX, y: e.clientY },
-        });
-        return;
-      }
-      const point = pointerEventToCanvasPoint(e, camera);
-      if (e.button !== 0) {
+        if (canvasState.mode === CanvasMode.Inserting) return;
+        if (canvasState.mode === CanvasMode.Pencil) {
+          startDrawing(point, e.pressure);
+          return;
+        }
+
+        setCanvasState({ origin: point, mode: CanvasMode.Pressing });
         return;
       }
 
-      if (canvasState.mode === CanvasMode.Inserting) {
-        return;
-      }
+      if (e.button !== 0) return;
+      if (canvasState.mode === CanvasMode.Inserting) return;
       if (canvasState.mode === CanvasMode.Pencil) {
         startDrawing(point, e.pressure);
         return;
       }
+
       setCanvasState({ origin: point, mode: CanvasMode.Pressing });
     },
     [camera, canvasState.mode, setCanvasState, startDrawing],

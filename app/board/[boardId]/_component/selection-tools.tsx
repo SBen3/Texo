@@ -103,7 +103,7 @@ export const SelectionTools = memo(
       return { x, y };
     };
     const { x, y } = getToolbarPosition(selectionBounds, camera);
-
+    
     return (
       <div
         className="absolute z-10 flex items-center gap-2 bg-white rounded-md p-2 border-2 border-black/5"

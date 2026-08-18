@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import Hint from "@/components/hint";
-import { Poppins } from "next/font/google";
+import { Outfit } from "next/font/google";
 import { useRenameModal } from "@/store/use-rename-modal";
 import { Actions } from "@/components/action";
 import { Menu } from "lucide-react";
@@ -14,11 +14,7 @@ import { Menu } from "lucide-react";
 interface InfoProp {
   boardId: string;
 }
-const poppin = Poppins({
-  weight: ["400", "700"],
-  subsets: ["latin"],
-  display: "swap",
-});
+const outfit = Outfit({ subsets: ["latin"], display: "swap" });
 export const Info = ({ boardId }: InfoProp) => {
   const { onOpen } = useRenameModal();
   const data = useQuery(api.board.get, { boardId: boardId as Id<"boards"> });
@@ -36,17 +32,23 @@ export const Info = ({ boardId }: InfoProp) => {
       <Button variant="board" className="px-3 py-5">
         <Hint label="Go To Boards" sideOffset={10}>
           <Link href="/">
-            <div className="flex flex-row items-center gap-2">
+            <div
+              className={`flex flex-row items-center gap-2 ${outfit.className} text-slate-800`}
+            >
               <Image src="/icon.png" alt="board logo" width={30} height={30} />
-              <span className={`${poppin.className} text-xs`}>Texo</span>
+              <span>Texo</span>
             </div>
           </Link>
         </Hint>
       </Button>
       <TapSeparator />
-      <Button variant="board" onClick={() => onOpen(data._id, data.title)}>
+      <Button
+        className={`${outfit.className} text-slate-800`}
+        variant="board"
+        onClick={() => onOpen(data._id, data.title)}
+      >
         <Hint label="board name" sideOffset={10}>
-          <div className="text-xs">{data.title}</div>
+          <div>{data.title}</div>
         </Hint>
       </Button>
       <TapSeparator />
