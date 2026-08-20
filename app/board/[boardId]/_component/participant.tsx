@@ -13,7 +13,7 @@ export const Participant = () => {
   const hasMoreUsers = others.length > MAX_SHOWN;
 
   return (
-    <div className="absolute top-2 right-2 bg-white rounded-md px-4 py-2 shadow-md flex items-center gap-x-2 h-[50px]">
+    <div className="absolute top-2 right-2 bg-white rounded-md px-4 py-2 shadow-md flex items-center flex-col gap-2 w-12">
       {/* Other users */}
       {others.slice(0, MAX_SHOWN).map(({ connectionId, info }) => (
         <UserAvatar
