@@ -17,7 +17,7 @@ export const Participant = () => {
       {/* Other users */}
       {others.slice(0, MAX_SHOWN).map(({ connectionId, info }) => (
         <UserAvatar
-          borderColor = {connectionIdToColor(connectionId)}
+          borderColor={connectionIdToColor(connectionId)}
           key={connectionId}
           src={info?.avatar}
           name={info?.name}
@@ -28,7 +28,8 @@ export const Participant = () => {
       {/* Current user */}
       {currentUser && (
         <UserAvatar
-          borderColor = {connectionIdToColor(currentUser.connectionId)}
+        
+          borderColor={connectionIdToColor(currentUser.connectionId)}
           src={currentUser.info?.avatar}
           name={`${currentUser.info?.name} (You)`}
           fallback={currentUser.info?.name?.[0] ?? "Y"}
@@ -38,7 +39,7 @@ export const Participant = () => {
       {/* Overflow indicator */}
       {hasMoreUsers && (
         <UserAvatar
-          borderColor = {connectionIdToColor(currentUser.connectionId)}
+          borderColor={connectionIdToColor(currentUser.connectionId)}
           name={`${others.length - MAX_SHOWN} more`}
           fallback={`+${others.length - MAX_SHOWN}`}
         />

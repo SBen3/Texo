@@ -15,7 +15,7 @@ export const UserAvatar = ({
   borderColor,
 }: UserAvatarProps) => {
   return (
-    <Hint label={name ?? "Teammate"} sideOffset={10}>
+    <Hint label={name ?? "Teammate"} sideOffset={10} side="left" >
       <Avatar
         className="relative w-8 h-8 rounded-full flex items-center justify-center border-2 overflow-hidden"
         style={{ borderColor }}
@@ -27,7 +27,7 @@ export const UserAvatar = ({
             className="w-full h-full object-cover"
           />
         ) : (
-          <AvatarFallback className="text-xs font-semibold text-white" style={{backgroundColor : borderColor}}>
+          <AvatarFallback className="text-xs font-semibold text-white bg-amber-300" style={{ backgroundColor: borderColor }}>
             {fallback}
           </AvatarFallback>
         )}
