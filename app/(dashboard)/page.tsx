@@ -1,20 +1,16 @@
 "use client";
 
-import { use } from "react";
-import BoardList from "@/components/boardList";
+import { useSearchParams } from "next/navigation";
 import { useOrganization } from "@clerk/nextjs";
+import BoardList from "@/components/boardList";
 
-interface DashboardProps {
-  searchParams: Promise<{
-    search?: string;
-    favorites?: string;
-  }>;
-}
-
-const DashboardPage = ({ searchParams }: DashboardProps) => {
-  const params = use(searchParams);
+const DashboardPage = () => {
+  const searchParams = useSearchParams();
   const { organization } = useOrganization();
-  const isFavorites = params.favorites === "true";
+
+  const search = searchParams.get("search") || "";
+  const favorites = searchParams.get("favorites") || "";
+  const isFavorites = favorites === "true";
 
   return (
     <div className="bg-[#F0F0F0]">
@@ -38,7 +34,10 @@ const DashboardPage = ({ searchParams }: DashboardProps) => {
       </div>
 
       <div className="px-4 py-8 sm:px-6 lg:px-8">
-        <BoardList orgId={organization?.id || ""} query={params} />
+        <BoardList
+          orgId={organization?.id || ""}
+          query={{ search, favorites }}
+        />
       </div>
     </div>
   );
