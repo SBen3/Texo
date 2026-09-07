@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import Hint from "@/components/hint";
-import { Outfit } from "next/font/google";
 import { useRenameModal } from "@/store/use-rename-modal";
 import { Actions } from "@/components/action";
 import { Menu } from "lucide-react";
@@ -14,57 +13,74 @@ import { Menu } from "lucide-react";
 interface InfoProp {
   boardId: string;
 }
-const outfit = Outfit({ subsets: ["latin"], display: "swap" });
+
 export const Info = ({ boardId }: InfoProp) => {
   const { onOpen } = useRenameModal();
   const data = useQuery(api.board.get, { boardId: boardId as Id<"boards"> });
   if (!data) return <InfoSkeleton />;
 
   const TapSeparator = () => {
-    return <div className="text-gray-400 pb-1 px-1.5">|</div>;
+    return <div className="h-4 w-px bg-border" />;
   };
 
   return (
     <div
       suppressHydrationWarning
-      className="absolute flex flex-row items-center h-[50px] min-w-[100px] top-2 left-2 bg-white rounded-md px-2 py-1 shadow-md"
+      className="absolute left-2 top-2 flex h-[52px] min-w-[100px] flex-row items-center gap-1 rounded-2xl border border-border bg-card px-2 py-1 shadow-card"
     >
-      <Button variant="board" className="px-3 py-5">
-        <Hint label="Go To Boards" sideOffset={10}>
-          <Link href="/">
-            <div
-              className={`flex flex-row items-center gap-2 ${outfit.className} text-slate-800`}
-            >
-              <Image src="/icon.png" alt="board logo" width={30} height={30} />
-              <span>Texo</span>
-            </div>
-          </Link>
-        </Hint>
-      </Button>
+      <Hint label="Go to boards" sideOffset={10}>
+        <Link href="/">
+          <Button
+            variant="board"
+            size="sm"
+            asChild={false}
+            className="group px-2 hover:bg-lime-200/30 hover:text-lime-600"
+          >
+            <span className="flex flex-row items-center gap-2 text-foreground">
+              <Image
+                src="/icon.svg"
+                alt="board logo"
+                width={26}
+                height={26}
+                className="rounded-md"
+              />
+              <span className="text-sm font-semibold tracking-[-0.02em] group-hover:text-lime-600">
+                Texo
+              </span>
+            </span>
+          </Button>
+        </Link>
+      </Hint>
       <TapSeparator />
-      <Button
-        className={`${outfit.className} text-slate-800`}
-        variant="board"
-        onClick={() => onOpen(data._id, data.title)}
-      >
-        <Hint label="board name" sideOffset={10}>
-          <div>{data.title}</div>
-        </Hint>
-      </Button>
-      <TapSeparator />
-      <Actions id={data._id} title={data.title}>
-        <Button variant={"board"}>
-          <Hint label="edit board" sideOffset={10}>
-            <Menu />
-          </Hint>
+      <Hint label="Board name" sideOffset={10}>
+        <Button
+          className="text-sm font-medium text-foreground hover:bg-lime-200/30 hover:text-lime-600"
+          variant="board"
+          size="sm"
+          onClick={() => onOpen(data._id, data.title)}
+        >
+          {data.title}
         </Button>
-      </Actions>
+      </Hint>
+      <TapSeparator />
+      <Hint label="Edit board" sideOffset={15}>
+      
+          <Actions id={data._id} title={data.title} side="bottom" sideOffset={10}>
+            <Button
+              variant="board"
+              size="icon-sm"
+              className="hover:bg-lime-200/30 hover:text-lime-600"
+            >
+              <Menu size={16} />
+            </Button>
+          </Actions>
+      </Hint>
     </div>
   );
 };
 
 export const InfoSkeleton = () => {
   return (
-    <div className="w-[300px] h-10 absolute top-2 left-2 bg-gray-200 rounded-md px-4 py-2 shadow-md animate-pulse"></div>
+    <div className="absolute top-2 left-2 h-[52px] w-[300px] animate-pulse rounded-2xl bg-muted px-4 py-2 shadow-card"></div>
   );
 };

@@ -33,7 +33,7 @@ export const Toolbar = ({
   return (
     <div className="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-2">
       {/* Drawing tools */}
-      <div className="bg-white rounded-md shadow-md p-1 flex flex-col">
+      <div className="bg-card rounded-2xl shadow-card p-1 flex flex-col border border-border gap-1">
         <ToolButton
           label="Select"
           icon={MousePointer}
@@ -111,7 +111,7 @@ export const Toolbar = ({
       </div>
 
       {/* Undo / Redo */}
-      <div className="bg-white rounded-md shadow-md p-1 flex flex-col">
+      <div className="bg-card rounded-2xl shadow-card p-1 flex flex-col border border-border">
         <ToolButton
           label="Undo"
           icon={Undo2}
@@ -134,8 +134,8 @@ export const Toolbar = ({
 export const ToolbarSkeleton = () => {
   return (
     <div className="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-2 w-[52px]">
-      <div className="bg-gray-200 rounded-md h-[300px] animate-pulse" />
-      <div className="bg-gray-200 rounded-md h-[100px] animate-pulse" />
+      <div className="bg-muted rounded-2xl h-[300px] animate-pulse" />
+      <div className="bg-muted rounded-2xl h-[100px] animate-pulse" />
     </div>
   );
 };

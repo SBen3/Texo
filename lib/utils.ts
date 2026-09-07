@@ -5,16 +5,14 @@ import { LiveList, LiveMap, LiveObject } from "@liveblocks/client";
 import { Layer } from "@/app/types/canvas";
 
 const COLORS = [
-  "#E57373", // red
-  "#F06292", // pink
-  "#BA68C8", // purple
-  "#64B5F6", // blue
-  "#4DB6AC", // teal
-  "#81C784", // green
-  "#FFD54F", // yellow
-  "#FF8A65", // orange
-  "#90A4AE", // gray-blue
-  "#A1887F", // brown
+  "#0098F2", // electric blue
+  "#6C56FC", // iris
+  "#F200CA", // magenta
+  "#5D9C06", // leaf
+  "#FF6363", // coral
+  "#F0A020", // amber
+  "#00B8A9", // teal
+  "#8D8D8D", // fog
 ];
 
 export const connectionIdToColor = (connectionId: number): string => {

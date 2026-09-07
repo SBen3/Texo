@@ -55,15 +55,15 @@ export const Actions = ({
       <DropdownMenuContent
         side={side}
         sideOffset={sideOffset}
-        className="w-44"
+        className="w-44 absolute"
         onClick={(e) => e.stopPropagation()} 
       >
-        <DropdownMenuItem onClick={onCopyLink} className="cursor-pointer">
-          <Link2 className="mr-2 h-4 w-4" />
+        <DropdownMenuItem onClick={onCopyLink} className="cursor-pointer focus:text-lime-500 focus:bg-lime-100">
+          <Link2 className="mr-2 h-4 w-4 text-lime-500" />
           Copy board link
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={()=>{onOpen(id, title)}} className="cursor-pointer">
-          <Pencil className="mr-2 h-4 w-4" />
+        <DropdownMenuItem onClick={()=>{onOpen(id, title)}} className="cursor-pointer focus:text-lime-500 focus:bg-lime-100">
+          <Pencil className="mr-2 h-4 w-4 text-lime-500" />
           Rename
         </DropdownMenuItem>
         <ConfirmModal
@@ -71,7 +71,7 @@ export const Actions = ({
           description="This will permanently delete the board. This action cannot be undone."
           onConfirm={onDelete}
         >
-          <button className="w-full rounded-md p-1 pl-2 flex items-center gap-2 text-[14px] hover:bg-red-100 cursor-pointer text-red-600 ">
+          <button className="flex w-full cursor-pointer items-center gap-2 rounded-sm p-1.5 pl-2 text-sm text-destructive hover:bg-destructive/10">
             <Trash2 className="mr-2 h-4 w-4" />
             Delete board
           </button>

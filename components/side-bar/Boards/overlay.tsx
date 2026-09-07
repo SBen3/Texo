@@ -1,6 +1,6 @@
 const Overlay = () => {
   return (
-    <div className="opacity-0 group-hover:opacity-50 transition-opacity absolute inset-0 bg-black" />
+    <div className="absolute inset-0 bg-midnight/0 transition-colors group-hover:bg-midnight/30" />
   );
 };
 

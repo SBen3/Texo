@@ -1,4 +1,3 @@
-
 "use client";
 
 import SearchUi from "./searchUi";
@@ -22,9 +21,9 @@ const BoardList = ({ orgId, query }: BoardListProps) => {
 
   if (boards === undefined) {
     return (
-      <div className="m-3">
-        <h1 className="mb-4 text-4xl font-black uppercase tracking-tighter text-black">
-          {query.favorites ? "Favorites Team" : "Boards Team"}
+      <div>
+        <h1 className="mb-4 text-2xl font-semibold tracking-[-0.03em] text-foreground">
+          {query.favorites ? "Favorite Boards" : "Team Boards"}
         </h1>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           <CreateBoard orgId={orgId} disabled />
@@ -61,9 +60,9 @@ const BoardList = ({ orgId, query }: BoardListProps) => {
   }
 
   return (
-    <div className="m-3">
-      <h1 className="mb-4 text-4xl font-black uppercase tracking-tighter text-black">
-        {query.favorites ? "Favorites Team" : "Boards Team"}
+    <div>
+      <h1 className="mb-4 text-2xl font-semibold tracking-[-0.03em] text-foreground">
+        {query.favorites ? "Favorite Boards" : "Team Boards"}
       </h1>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         <CreateBoard orgId={orgId} disabled={false} />

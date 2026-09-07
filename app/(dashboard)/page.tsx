@@ -13,23 +13,26 @@ const DashboardPage = () => {
   const isFavorites = favorites === "true";
 
   return (
-    <div className="bg-[#F0F0F0]">
-      <div className="relative overflow-hidden border-b-4 border-black bg-[#1040C0] px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+    <div className="bg-white dark:bg-sidebar">
+      <div className="relative overflow-hidden bg-lime-300/20 dark:bg-lime-950/50 px-4 py-10sm:px-6 sm:py-14 lg:px-8">
         <div
-          className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"
+          className="pointer-events-none absolute -right-14 -top-14 h-48 w-48 rounded-full bg-lime-200/70"
           aria-hidden
         />
         <div
-          className="pointer-events-none absolute -bottom-8 right-24 h-24 w-24 rotate-45 bg-[#F0C020]/20"
+          className="pointer-events-none absolute -bottom-10 right-32 h-24 w-24 rounded-2xl bg-lime-700/30"
           aria-hidden
         />
-        <h1 className="text-4xl font-black uppercase leading-[0.9] tracking-tighter text-white sm:text-5xl">
+        <p className="eyebrow relative text-lime-700">
+          {isFavorites ? "Starred" : "Workspace"}
+        </p>
+        <h1 className="relative mt-2 text-3xl font-semibold tracking-[-0.03em] text-ink sm:text-5xl">
           {isFavorites ? "Favorite Boards" : "Your Boards"}
         </h1>
-        <p className="mt-2 max-w-md font-medium text-white/80">
+        <p className="relative mt-2 max-w-md text-sm text-smoke sm:text-base">
           {isFavorites
             ? "The boards you've starred, all in one place."
-            : "Everything your organization is working on."}
+            : "Everything your organization is working on, in one canvas."}
         </p>
       </div>
 

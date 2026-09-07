@@ -21,20 +21,17 @@ const Item = ({ id, image, item }: ItemProps) => {
 
   return (
     <div>
-      <Hint label={item} side="right" align="center" sideOffset={5} alignOffset={0}>
+      <Hint label={item} side="right" align="center" sideOffset={10} alignOffset={0}>
         <button
           onClick={onclick}
           className={cn(
-            "relative m-1 block overflow-hidden rounded-none border-2 border-black transition-all duration-200",
+            "relative block overflow-hidden rounded-full transition-all duration-200",
             isActive
-              ? "shadow-[3px_3px_0px_0px_#F0C020] grayscale-0"
-              : "shadow-none grayscale hover:-translate-y-1 hover:grayscale-0"
+              ? "ring-2 ring-lime-400 ring-offset-0 ring-offset-midnight"
+              : "opacity-60 grayscale hover:opacity-100 hover:grayscale-0"
           )}
         >
-          <Image src={image} alt={item} width={32} height={32} className="block" />
-          {isActive && (
-            <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full border-2 border-black bg-[#D02020]" />
-          )}
+          <Image src={image} alt={item} width={36} height={36} className="block" />
         </button>
       </Hint>
     </div>

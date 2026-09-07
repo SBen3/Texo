@@ -9,8 +9,8 @@ import {
 } from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { AuthLoading } from "convex/react";
-import Loading from "@/app/(auth)/loading";
 import LandingPage from "@/components/landing/landing-page";
+import { Loading } from "@/app/board/[boardId]/_component/loading";
 
 const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 

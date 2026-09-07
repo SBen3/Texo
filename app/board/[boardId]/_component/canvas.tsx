@@ -42,6 +42,7 @@ import { Path } from "./path";
 import { useDisableScrollBounce } from "@/app/hooks/use-disable-scroll-bounce";
 import { useEffect, useRef } from "react";
 import { useDeleteLayers } from "./use-delete-layers";
+import ThemeToggle from "@/components/theme-toggle";
 
 const MAX_LAYERS = 100;
 export const Canvas = ({ boardId }: CanvasProps) => {
@@ -536,9 +537,12 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     [canvasState.mode, camera],
   );
   return (
-    <div>
+    <div> 
       <Info boardId={boardId} />
       <Participant />
+      <div className="absolute top-4 right-12">
+        <ThemeToggle className="size-8" />
+      </div>
       <Toolbar
         canvasState={canvasState}
         setCanvasState={setCanvasState}

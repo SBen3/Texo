@@ -13,7 +13,7 @@ export const Participant = () => {
   const hasMoreUsers = others.length > MAX_SHOWN;
 
   return (
-    <div className="absolute top-2 right-2 bg-white rounded-md px-4 py-2 shadow-md flex items-center flex-col gap-2 w-12">
+    <div className="absolute top-4 right-2 flex flex-col items-center gap-2 rounded-full">
       {/* Other users */}
       {others.slice(0, MAX_SHOWN).map(({ connectionId, info }) => (
         <UserAvatar
@@ -28,7 +28,6 @@ export const Participant = () => {
       {/* Current user */}
       {currentUser && (
         <UserAvatar
-        
           borderColor={connectionIdToColor(currentUser.connectionId)}
           src={currentUser.info?.avatar}
           name={`${currentUser.info?.name} (You)`}
@@ -50,6 +49,6 @@ export const Participant = () => {
 
 export const ParticipantSkeleton = () => {
   return (
-    <div className="w-[180px] h-10 absolute top-2 right-2 bg-gray-200 rounded-md px-4 py-2 shadow-md animate-pulse"></div>
+    <div className="absolute top-2 right-2 h-10 w-[180px] animate-pulse rounded-2xl bg-muted px-4 py-2 shadow-card"></div>
   );
 };

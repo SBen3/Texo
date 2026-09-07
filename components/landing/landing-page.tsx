@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { SignInButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
+import Logo from "@/components/logo";
 import {
   PenTool,
   Layers,
@@ -13,51 +15,11 @@ import {
   Type,
   ChevronDown,
   Quote,
+  StickyNote,
+  Square,
+  Circle,
 } from "lucide-react";
-
-const Logo = ({ size = 40 }: { size?: number }) => (
-  <div className="relative shrink-0" style={{ width: size, height: size }}>
-    <div
-      className="absolute left-0 top-0 rounded-full bg-[#1040C0] border-2 border-black"
-      style={{ width: size * 0.55, height: size * 0.55 }}
-    />
-    <div
-      className="absolute right-0 top-0 bg-[#D02020] border-2 border-black rotate-12"
-      style={{ width: size * 0.55, height: size * 0.55 }}
-    />
-    <div
-      className="absolute left-[15%] bottom-0 bg-[#F0C020] border-2 border-black"
-      style={{
-        width: size * 0.55,
-        height: size * 0.55,
-        clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)",
-      }}
-    />
-  </div>
-);
-
-const SHAPES = ["circle", "square", "triangle"] as const;
-const ACCENTS = ["#1040C0", "#D02020", "#F0C020"];
-
-function ShapeBadge({ index, size = 12 }: { index: number; size?: number }) {
-  const shape = SHAPES[index % SHAPES.length];
-  const color = ACCENTS[index % ACCENTS.length];
-  return (
-    <div
-      className="border-2 border-black shrink-0"
-      style={{
-        width: size,
-        height: size,
-        backgroundColor: color,
-        borderRadius: shape === "circle" ? "9999px" : "0px",
-        clipPath:
-          shape === "triangle"
-            ? "polygon(50% 0%, 0% 100%, 100% 100%)"
-            : undefined,
-      }}
-    />
-  );
-}
+import Image from "next/image";
 
 const NAV_LINKS = ["Features", "How It Works", "Pricing", "FAQ"];
 
@@ -75,37 +37,31 @@ const FEATURES = [
     icon: PenTool,
     title: "Freehand Drawing",
     desc: "Natural pencil and shape tools that feel like drawing on paper, powered by pressure-sensitive stroke rendering.",
-    accent: "#1040C0",
   },
   {
     icon: Layers,
     title: "Layer Management",
     desc: "Full control over z-ordering, grouping, and selection — bring anything to front or send it to back instantly.",
-    accent: "#D02020",
   },
   {
     icon: Users,
     title: "Live Collaboration",
     desc: "See teammates' cursors and selections move in real time. No refreshing, no conflicts, no waiting.",
-    accent: "#F0C020",
   },
   {
     icon: Type,
     title: "Smart Text Layers",
     desc: "Text that scales intelligently with its container, so labels and notes stay legible at any zoom level.",
-    accent: "#1040C0",
   },
   {
     icon: Undo2,
     title: "Full Undo History",
-    desc: "Ctrl+Z through your entire session with confidence — every stroke, move, and delete is tracked.",
-    accent: "#D02020",
+    desc: "Move through your entire session with confidence — every stroke, move, and delete is tracked.",
   },
   {
     icon: MousePointer2,
     title: "Built for Speed",
     desc: "Keyboard shortcuts for every action, so your hands never have to leave the canvas to get work done.",
-    accent: "#F0C020",
   },
 ];
 
@@ -158,7 +114,6 @@ const PRICING = [
   {
     name: "Starter",
     price: "Free",
-    accent: "#1040C0",
     features: [
       "Unlimited boards",
       "Up to 3 collaborators",
@@ -168,7 +123,6 @@ const PRICING = [
   {
     name: "Team",
     price: "$12/mo",
-    accent: "#D02020",
     features: [
       "Everything in Starter",
       "Unlimited collaborators",
@@ -180,7 +134,6 @@ const PRICING = [
   {
     name: "Enterprise",
     price: "Custom",
-    accent: "#F0C020",
     features: ["Everything in Team", "SSO & audit logs", "Dedicated support"],
   },
 ];
@@ -208,92 +161,110 @@ export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   return (
-    <div className="min-h-screen bg-[#F0F0F0] text-black">
+    <div className="min-h-screen bg-background text-foreground">
       {/* NAV */}
-      <nav className="flex items-center justify-between border-b-4 border-black bg-white px-6 py-3 sticky top-0 z-30">
-        <div className="flex items-center gap-2">
-          <Logo size={32} />
-          <span className="text-xl font-black uppercase tracking-tighter">
-            Texo
-          </span>
-        </div>
-        <div className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link}
-              href={`#${link.toLowerCase().replace(/\s/g, "-")}`}
-              className="text-sm font-bold uppercase tracking-wide hover:text-[#1040C0] transition-colors"
-            >
-              {link}
-            </a>
-          ))}
-        </div>
-        <SignInButton mode="modal">
-          <Button variant="secondary" shape="square" size="sm">
-            Sign In
-          </Button>
-        </SignInButton>
-      </nav>
+      <div className="sticky top-0 z-30 px-4 pt-4 sm:px-6">
+        <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-full border border-border bg-card/90 px-3 py-2 shadow-card backdrop-blur">
+          <div className="flex items-center gap-2 pl-2">
+            <Image src="/icon.svg" alt="Texo" width={24} height={24} />
+            <span className="text-lg font-semibold tracking-[-0.03em]">
+              Texo
+            </span>
+          </div>
+          <div className="hidden md:flex md:items-center md:gap-1">
+            {NAV_LINKS.map((link) => (
+              <a
+                key={link}
+                href={`#${link.toLowerCase().replace(/\s/g, "-")}`}
+                className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              >
+                {link}
+              </a>
+            ))}
+          </div>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <SignInButton mode="modal">
+              <Button size="sm">Sign In</Button>
+            </SignInButton>
+          </div>
+        </nav>
+      </div>
 
       {/* HERO */}
-      <section className="grid lg:grid-cols-2 border-b-4 border-black">
-        <div className="flex flex-col justify-center gap-6 px-6 py-16 sm:px-12 sm:py-24">
-          <div className="inline-flex items-center gap-2 w-fit px-3 py-1 border-2 border-black bg-[#F0C020] text-xs font-bold uppercase tracking-widest">
-            <ShapeBadge index={0} size={8} />
+      <section className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-2 lg:items-center lg:gap-6">
+        <div className="flex flex-col gap-6">
+          <div className="eyebrow inline-flex w-fit items-center gap-2 rounded-full bg-lime-100 px-3 py-1.5 text-lime-700">
+            <span className="size-1.5 rounded-full bg-lime-400" />
             Now in open beta
           </div>
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tighter leading-[0.9]">
-            Build Ideas
+          <h1 className="text-4xl font-semibold leading-[1.05] tracking-[-0.03em] sm:text-6xl">
+            Build ideas
             <br />
-            Together
+            together
           </h1>
-          <p className="text-base sm:text-lg font-medium text-black/70 max-w-md">
+          <p className="max-w-md text-base text-smoke sm:text-lg">
             Texo is a real-time collaborative whiteboard for teams who think
             better with a pencil in hand. Draw, organize, and ship faster —
             together, in the same space.
           </p>
-          <div className="flex flex-wrap gap-4 mt-2">
+          <div className="mt-2 flex flex-wrap gap-3">
             <SignInButton mode="modal">
-              <Button variant="secondary" shape="square" size="lg">
-                Start Building
-              </Button>
+              <Button size="lg">Start Building</Button>
             </SignInButton>
             <a href="#how-it-works">
-              <Button variant="outline" shape="square" size="lg">
+              <Button variant="outline" size="lg">
                 See How It Works
               </Button>
             </a>
           </div>
-          <p className="text-xs text-black/50 font-medium">
+          <p className="text-xs text-fog">
             No credit card required · Free forever plan
           </p>
         </div>
 
-        <div className="relative bg-[#F0C020] min-h-80 lg:min-h-0 overflow-hidden border-t-4 lg:border-t-0 lg:border-l-4 border-black">
-          <div className="absolute left-[15%] top-[10%] w-28 h-28 sm:w-40 sm:h-40 rounded-full bg-[#1040C0] border-4 border-black" />
-          <div className="absolute right-[20%] top-[10%] w-24 h-24 sm:w-32 sm:h-32 bg-[purple] border-4 border-black rotate-12" />
-          <div className="absolute left-[30%] bottom-[20%] -translate-x-1/2 w-32 h-32 sm:w-44 sm:h-44 bg-white border-4 -rotate-12 border-black" />
-          <div
-            className="absolute right-[20%] bottom-[30%] w-20 h-20 sm:w-28 sm:h-28 bg-[red] border-4 border-black -rotate-3"
-            style={{ clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)" }}
-          />
+        {/* Layered canvas mockup — stacked cards echoing the Acctual "invoice mockup" motif */}
+        <div className="relative flex min-h-[360px] items-center justify-center">
+          <div className="absolute h-64 w-72 -rotate-6 rounded-2xl border border-border bg-card shadow-card sm:h-72 sm:w-80" />
+          <div className="absolute h-64 w-72 rotate-3 translate-x-6 rounded-2xl border border-border bg-card shadow-card sm:h-72 sm:w-80" />
+          <div className="relative flex h-64 w-72 -rotate-1 flex-col gap-3 rounded-2xl border border-border bg-card p-5 shadow-card sm:h-72 sm:w-80">
+            <p className="eyebrow text-muted-foreground">Board · Sprint Plan</p>
+            <div className="flex flex-1 items-center justify-center gap-3">
+              <div className="flex size-16 rotate-[-6deg] items-center justify-center rounded-xl bg-blush text-magenta">
+                <StickyNote size={22} />
+              </div>
+              <div className="flex size-16 items-center justify-center rounded-xl bg-ice text-lime-500">
+                <Square size={22} />
+              </div>
+              <div className="flex size-16 rotate-[6deg] items-center justify-center rounded-full bg-lavender text-iris">
+                <Circle size={22} />
+              </div>
+            </div>
+            <div className="flex items-center gap-1.5">
+              {["#0098F2", "#6C56FC", "#F200CA", "#5D9C06"].map((c) => (
+                <span
+                  key={c}
+                  className="size-4 rounded-full border border-border"
+                  style={{ backgroundColor: c }}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
       {/* TRUSTED BY */}
-      <section className="bg-slate-950 border-b border-slate-800 py-10">
-        <p className="text-center text-xs font-bold uppercase tracking-widest text-slate-400 mb-6 px-6">
+      <section className="border-y border-border bg-muted py-10">
+        <p className="eyebrow mb-6 px-6 text-center text-muted-foreground">
           Trusted by teams at
         </p>
-
-        <div className="max-w-5xl mx-auto overflow-hidden mask-[linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]">
-          {/* Repeating 4x ensures smooth continuous infinite scrolling */}
-          <div className="flex w-max animate-marquee gap-16 hover:paused cursor-pointer">
+        <div className="mx-auto max-w-5xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]">
+          <div className="flex w-max animate-marquee gap-16 cursor-pointer">
             {[...TRUSTED_BY, ...TRUSTED_BY, ...TRUSTED_BY, ...TRUSTED_BY].map(
               (name, i) => (
                 <span
                   key={`${name}-${i}`}
-                  className="text-lg font-black uppercase tracking-tight text-white/50 hover:text-orange-500 transition-colors shrink-0"
+                  className="shrink-0 text-lg font-semibold tracking-[-0.02em] text-muted-foreground/60 transition-colors hover:text-lime-500"
                 >
                   {name}
                 </span>
@@ -302,18 +273,19 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
       {/* STATS */}
-      <section className="bg-black/25 border-b-4 border-black">
-        <div className="grid grid-cols-2 lg:grid-cols-4 divide-y divide-x-0 lg:divide-y-0 lg:divide-x divide-black">
+      <section className="border-b border-border">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 lg:grid-cols-4">
           {STATS.map((stat) => (
             <div
               key={stat.label}
-              className="flex flex-col items-center justify-center gap-1 py-10 px-4 text-center border-b-4 lg:border-b-0 border-black last:border-b-0"
+              className="flex flex-col items-center justify-center gap-1 border-border px-4 py-10 text-center [&:not(:last-child)]:border-r [&:nth-child(-n+2)]:border-b lg:[&:nth-child(-n+2)]:border-b-0"
             >
-              <span className="text-3xl sm:text-4xl font-black tracking-tighter">
+              <span className="text-3xl font-semibold tracking-[-0.03em] sm:text-4xl">
                 {stat.value}
               </span>
-              <span className="text-xs font-bold uppercase tracking-widest text-black/70">
+              <span className="eyebrow text-muted-foreground">
                 {stat.label}
               </span>
             </div>
@@ -324,66 +296,58 @@ export default function LandingPage() {
       {/* FEATURES */}
       <section
         id="features"
-        className="px-6 py-16 sm:px-12 sm:py-24 border-b-4 border-black"
+        className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24"
       >
-        <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter mb-4 text-center">
-          Everything You Need
+        <p className="eyebrow text-center text-lime-500">Product</p>
+        <h2 className="mt-2 text-center text-3xl font-semibold tracking-[-0.03em] sm:text-5xl">
+          Everything you need
         </h2>
-        <p className="text-center text-black/70 font-medium mb-12 max-w-lg mx-auto">
+        <p className="mx-auto mt-4 max-w-lg text-center text-smoke">
           A full-featured canvas without the bloat — built for speed and built
           for teams.
         </p>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map((f) => (
             <div
               key={f.title}
-              className="relative bg-white border-4 border-black shadow-[6px_6px_0px_0px_black] hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_black] transition-all p-6"
+              className="rounded-2xl bg-muted p-6 transition-colors hover:bg-lime-100"
             >
-              <div
-                className="absolute -top-2 -right-2 w-4 h-4 border-2 border-black"
-                style={{ backgroundColor: f.accent }}
-              />
-              <div className="w-12 h-12 flex items-center justify-center bg-white border-2 border-black shadow-[3px_3px_0px_0px_black] mb-4">
-                <f.icon size={22} strokeWidth={2.5} />
+              <div className="mb-4 flex size-11 items-center justify-center rounded-full bg-card text-lime-500 shadow-subtle">
+                <f.icon size={20} strokeWidth={2} />
               </div>
-              <h3 className="text-lg font-black uppercase tracking-tight mb-2">
+              <h3 className="mb-2 text-lg font-semibold tracking-[-0.02em]">
                 {f.title}
               </h3>
-              <p className="text-sm text-black/70 font-medium leading-relaxed">
-                {f.desc}
-              </p>
+              <p className="text-sm leading-relaxed text-smoke">{f.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="bg-white px-6 py-16 sm:px-12 sm:py-24 border-b-4 border-black">
-        <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter mb-12 text-center">
-          Loved By Builders
+      <section className="border-y border-border bg-muted px-4 py-16 sm:px-6 sm:py-24">
+        <h2 className="mb-12 text-center text-3xl font-semibold tracking-[-0.03em] sm:text-5xl">
+          Loved by builders
         </h2>
-        <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {TESTIMONIALS.map((t, i) => (
+        <div className="mx-auto grid max-w-4xl gap-6 sm:grid-cols-2">
+          {TESTIMONIALS.map((t) => (
             <div
               key={t.name}
-              className="relative bg-[#F0F0F0] border-4 border-black shadow-[6px_6px_0px_0px_black] p-6 flex flex-col gap-4"
+              className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-card"
             >
-              <Quote
-                size={28}
-                strokeWidth={2.5}
-                style={{ color: ACCENTS[i % ACCENTS.length] }}
-              />
-              <p className="font-medium text-black/80 leading-relaxed">
+              <Quote size={24} strokeWidth={2} className="text-lime-500" />
+              <p className="text-lg font-semibold leading-snug tracking-[-0.02em]">
                 {t.quote}
               </p>
-              <div className="flex items-center gap-3 mt-auto pt-2">
-                <div
-                  className="w-9 h-9 rounded-full border-2 border-black shrink-0"
-                  style={{ backgroundColor: ACCENTS[i % ACCENTS.length] }}
-                />
+              <div className="mt-auto flex items-center gap-3 pt-2">
+                <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-lime-100 text-sm font-semibold text-lime-500 dark:bg-lime-100 dark:text-lime-700">
+                  {t.name[0]}
+                </div>
                 <div>
-                  <p className="text-sm font-black">{t.name}</p>
-                  <p className="text-xs text-black/50 font-medium">{t.role}</p>
+                  <p className="font-signature text-2xl leading-none text-foreground">
+                    {t.name}
+                  </p>
+                  <p className="text-xs text-fog">{t.role}</p>
                 </div>
               </div>
             </div>
@@ -392,18 +356,18 @@ export default function LandingPage() {
       </section>
 
       {/* BENEFITS */}
-      <section className="bg-[#1040C0] text-white px-6 py-16 sm:px-12 sm:py-24 border-b-4 border-black">
-        <div className="max-w-3xl mx-auto flex flex-col gap-8">
-          <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter">
-            Why Teams Choose Texo
+      <section className="bg-midnight px-4 py-16 text-white sm:px-6 sm:py-24 dark:bg-card dark:text-foreground">
+        <div className="mx-auto flex max-w-3xl flex-col gap-8">
+          <h2 className="text-3xl font-semibold tracking-[-0.03em] sm:text-5xl">
+            Why teams choose Texo
           </h2>
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid gap-4 sm:grid-cols-2">
             {BENEFITS.map((b) => (
               <div key={b} className="flex items-start gap-3">
-                <div className="mt-0.5 shrink-0 w-6 h-6 rounded-full bg-[#F0C020] border-2 border-black flex items-center justify-center">
-                  <Check size={14} strokeWidth={3} className="text-black" />
+                <div className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-lime-500">
+                  <Check size={14} strokeWidth={3} className="text-white" />
                 </div>
-                <p className="font-medium">{b}</p>
+                <p className="opacity-90">{b}</p>
               </div>
             ))}
           </div>
@@ -413,26 +377,22 @@ export default function LandingPage() {
       {/* HOW IT WORKS */}
       <section
         id="how-it-works"
-        className="px-6 py-16 sm:px-12 sm:py-24 border-b-4 border-black bg-[#F0C020]"
+        className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24"
       >
-        <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter mb-12 text-center">
-          How It Works
+        <h2 className="mb-12 text-center text-3xl font-semibold tracking-[-0.03em] sm:text-5xl">
+          How it works
         </h2>
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4">
           {STEPS.map((step) => (
             <div
               key={step.n}
-              className="flex flex-col items-center text-center gap-4"
+              className="flex flex-col items-center gap-4 text-center"
             >
-              <div className="relative w-14 h-14 bg-[#D02020] border-2 border-black rotate-45 flex items-center justify-center">
-                <span className="-rotate-45 text-white font-black text-lg">
-                  {step.n}
-                </span>
+              <div className="flex size-14 items-center justify-center rounded-full bg-lime-100 text-lg font-semibold text-lime-500 dark:bg-lime-100 dark:text-lime-700">
+                {step.n}
               </div>
-              <h3 className="font-black uppercase tracking-tight">
-                {step.title}
-              </h3>
-              <p className="text-sm text-black/70 font-medium">{step.desc}</p>
+              <h3 className="font-semibold tracking-[-0.02em]">{step.title}</h3>
+              <p className="text-sm text-smoke">{step.desc}</p>
             </div>
           ))}
         </div>
@@ -441,51 +401,50 @@ export default function LandingPage() {
       {/* PRICING */}
       <section
         id="pricing"
-        className="bg-white px-6 py-16 sm:px-12 sm:py-24 border-b-4 border-black"
+        className="border-t border-border bg-muted px-4 py-16 sm:px-6 sm:py-24"
       >
-        <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter mb-12 text-center">
-          Simple Pricing
+        <h2 className="mb-12 text-center text-3xl font-semibold tracking-[-0.03em] sm:text-5xl">
+          Simple pricing
         </h2>
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto items-start">
+        <div className="mx-auto grid max-w-5xl items-start gap-6 md:grid-cols-3">
           {PRICING.map((plan) => (
             <div
               key={plan.name}
-              className={`relative bg-white border-4 border-black p-6 flex flex-col gap-4 transition-all ${
+              className={`relative flex flex-col gap-4 rounded-2xl border p-6 transition-all ${
                 plan.featured
-                  ? "shadow-[8px_8px_0px_0px_black] md:-translate-y-3"
-                  : "shadow-[4px_4px_0px_0px_black]"
+                  ? "border-lime-500 bg-card shadow-card md:-translate-y-3"
+                  : "border-border bg-card"
               }`}
             >
               {plan.featured && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 text-xs font-black uppercase tracking-widest bg-[#F0C020] border-2 border-black">
+                <span className="eyebrow absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-lime-100  px-3 py-1 text-lime-500">
                   Most Popular
                 </span>
               )}
-              <div
-                className="w-4 h-4 border-2 border-black"
-                style={{ backgroundColor: plan.accent }}
-              />
-              <h3 className="text-xl font-black uppercase tracking-tight">
+              <h3 className="text-xl font-semibold tracking-[-0.02em]">
                 {plan.name}
               </h3>
-              <p className="text-3xl font-black tracking-tighter">
+              <p className="text-3xl font-semibold tracking-[-0.03em]">
                 {plan.price}
               </p>
-              <ul className="flex flex-col gap-2 mt-2">
+              <ul className="mt-2 flex flex-col gap-2">
                 {plan.features.map((f) => (
                   <li
                     key={f}
-                    className="flex items-center gap-2 text-sm font-medium text-black/70"
+                    className="flex items-center gap-2 text-sm text-smoke"
                   >
-                    <Check size={14} strokeWidth={3} />
+                    <Check
+                      size={14}
+                      strokeWidth={2.5}
+                      className="text-lime-500"
+                    />
                     {f}
                   </li>
                 ))}
               </ul>
               <SignInButton mode="modal">
                 <Button
-                  variant={plan.featured ? "secondary" : "outline"}
-                  shape="square"
+                  variant={plan.featured ? "default" : "outline"}
                   className="mt-4 w-full"
                 >
                   Get Started
@@ -499,38 +458,30 @@ export default function LandingPage() {
       {/* FAQ */}
       <section
         id="faq"
-        className="px-6 py-16 sm:px-12 sm:py-24 border-b-4 border-black"
+        className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24"
       >
-        <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter mb-12 text-center">
-          Questions, Answered
+        <h2 className="mb-12 text-center text-3xl font-semibold tracking-[-0.03em] sm:text-5xl">
+          Questions, answered
         </h2>
-        <div className="max-w-2xl mx-auto flex flex-col gap-4">
+        <div className="flex flex-col">
           {FAQS.map((faq, i) => {
             const isOpen = openFaq === i;
             return (
-              <div
-                key={faq.q}
-                className={`border-4 border-black transition-colors ${
-                  isOpen ? "bg-[#D02020] text-white" : "bg-white"
-                } shadow-[4px_4px_0px_0px_black]`}
-              >
+              <div key={faq.q} className="border-b border-border">
                 <button
                   onClick={() => setOpenFaq(isOpen ? null : i)}
-                  className="w-full flex items-center justify-between gap-4 p-5 text-left font-black uppercase tracking-tight text-sm sm:text-base"
+                  className="flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium sm:text-base"
                 >
                   {faq.q}
                   <ChevronDown
-                    size={20}
-                    strokeWidth={3}
-                    className={`shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`}
+                    size={18}
+                    className={`shrink-0 text-muted-foreground transition-transform ${isOpen ? "rotate-180" : ""}`}
                   />
                 </button>
                 {isOpen && (
-                  <div className="px-5 pb-5 border-t-4 border-black bg-[#FFF9C4] text-black">
-                    <p className="pt-4 text-sm font-medium leading-relaxed">
-                      {faq.a}
-                    </p>
-                  </div>
+                  <p className="pb-4 text-sm leading-relaxed text-smoke">
+                    {faq.a}
+                  </p>
                 )}
               </div>
             );
@@ -539,20 +490,15 @@ export default function LandingPage() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="relative bg-[#F0C020] px-6 py-20 sm:px-12 sm:py-28 border-b-4 border-black overflow-hidden text-center">
-        <div className="absolute -left-10 -top-10 w-40 h-40 rounded-full bg-white/50 border-4 border-black" />
-        <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-[#1040C0]/50 border-4 border-black rotate-12" />
+      <section className="relative overflow-hidden bg-lime-100 px-4 py-20 text-center sm:px-6 sm:py-28 dark:bg-lime-950">
+        <div className="pointer-events-none absolute -left-10 -top-10 h-40 w-40 rounded-full bg-black/25 dark:bg-white/25" />
+        <div className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 rounded-2xl bg-black/20  dark:bg-white/20" />
         <div className="relative z-10 flex flex-col items-center gap-6">
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tighter max-w-2xl leading-[0.95]">
-            Start Building With Your Team Today
+          <h2 className="max-w-2xl text-3xl font-semibold leading-[1.05] tracking-[-0.03em] text-ink sm:text-5xl lg:text-6xl">
+            Start building with your team today
           </h2>
           <SignInButton mode="modal">
-            <Button
-              variant="secondary"
-              shape="pill"
-              size="lg"
-              className="px-12"
-            >
+            <Button size="lg" className="px-10">
               Get Started Free
             </Button>
           </SignInButton>
@@ -560,24 +506,17 @@ export default function LandingPage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-[#121212] text-white px-6 py-12 sm:px-12">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+      <footer className="bg-midnight px-4 py-12 text-white sm:px-6 dark:bg-card dark:text-foreground">
+        <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
           <div className="flex items-center gap-2">
-            <Logo size={28} />
-            <span className="text-lg font-black uppercase tracking-tighter">
+            <Image src="/icon.svg" alt="Texo" width={24} height={24} />
+            <span className="text-lg font-semibold tracking-[-0.03em]">
               Texo
             </span>
           </div>
-          <div className="flex items-center gap-2 text-xs text-white/50 font-medium">
-            <div className="flex items-center gap-1">
-              <ShapeBadge index={0} size={8} />
-              <ShapeBadge index={1} size={8} />
-              <ShapeBadge index={2} size={8} />
-            </div>
-            <span className="ml-2">
-              © {new Date().getFullYear()} Texo. All rights reserved.
-            </span>
-          </div>
+          <p className="text-xs text-white/50 dark:text-muted-foreground">
+            © {new Date().getFullYear()} Texo. All rights reserved.
+          </p>
         </div>
       </footer>
     </div>

@@ -9,24 +9,24 @@ import qs from "query-string";
 const SearchInput = () => {
   const router = useRouter();
   const [value, setValue] = useState("");
-  const [debouncedSearch] = useDebounceValue (value, 500);
+  const [debouncedSearch] = useDebounceValue(value, 500);
   useEffect(() => {
     const url = qs.stringifyUrl(
       {
         url: "/",
-        query: { search: debouncedSearch }, 
+        query: { search: debouncedSearch },
       },
       { skipNull: true, skipEmptyString: true }
     );
     router.push(url);
   }, [debouncedSearch, router]);
   return (
-    <div className="flex w-[400px]">
-      <Search className="absolute ml-2 mt-2 w-5 h-5 text-gray-600" />
+    <div className="relative flex w-[320px] items-center">
+      <Search className="pointer-events-none absolute left-4 h-4 w-4 text-muted-foreground" />
       <Input
         type="text"
-        placeholder="Search..."
-        className="p-2 pl-10 rounded-none"
+        placeholder="Search boards…"
+        className="pl-10"
         value={value}
         onChange={(e) => setValue(e.target.value)}
       ></Input>

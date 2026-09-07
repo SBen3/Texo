@@ -106,7 +106,7 @@ export const SelectionTools = memo(
     
     return (
       <div
-        className="absolute z-10 flex items-center gap-2 bg-white rounded-md p-2 border-2 border-black/5"
+        className="absolute z-10 flex items-center gap-2 rounded-2xl border border-border bg-card p-2 shadow-card"
         style={{
           transform: `translate(${x}px, ${y}px)`,
         }}
@@ -115,12 +115,12 @@ export const SelectionTools = memo(
 
         <div className="flex flex-col">
           <Hint label="Bring to Front">
-            <Button variant={"board"} onClick={moveToFront}>
+            <Button variant={"board"} size="icon-sm" onClick={moveToFront}>
               <BringToFront />
             </Button>
           </Hint>
           <Hint label="Send to Back" side="bottom">
-            <Button variant={"board"} onClick={moveToBack}>
+            <Button variant={"board"} size="icon-sm" onClick={moveToBack}>
               <SendToBack />
             </Button>
           </Hint>
@@ -128,7 +128,7 @@ export const SelectionTools = memo(
 
         <Hint label="delete">
           <button
-            className="flex text-sm mr-1 p-1 rounded hover:bg-red-100 text-red-600 font-medium"
+            className="mr-1 flex rounded-full p-1.5 text-sm font-medium text-destructive hover:bg-destructive/10"
             onClick={deleteLayers}
           >
             <Trash2 size={20} />
