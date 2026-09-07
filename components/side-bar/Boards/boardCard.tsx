@@ -46,14 +46,14 @@ const BoardCard = ({
   };
 
   return (
-    <div className="group relative border rounded-lg overflow-hidden hover:shadow-md transition cursor-pointer" onClick={()=>router.push(`board/${id}`)}>
-      <div className="relative w-full h-60 bg-muted" >
+    <div className="group relative cursor-pointer overflow-hidden rounded-2xl border border-border bg-card shadow-subtle transition hover:shadow-card" onClick={()=>router.push(`board/${id}`)}>
+      <div className="relative h-60 w-full bg-muted" >
         <Image src={imageUrl} alt={title} fill className="object-cover"/>
         <Overlay />
-        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <Actions id={id} title={title} side="right">
-            <button className="p-1.5 rounded-sm hover:bg-black/10">
-              <MoreHorizontal className="h-4 w-4 text-white" />
+        <div className="absolute top-2 right-2 opacity-0 transition-opacity group-hover:opacity-100">
+          <Actions id={id} title={title} side="bottom" sideOffset={10}>
+            <button className="rounded-full bg-black/30 p-1.5 backdrop-blur hover:bg-black/50">
+              <MoreHorizontal className="h-4 w-4 text-white focus:outline focus:outline-lime-300" />
             </button>
           </Actions>
         </div>
@@ -73,8 +73,8 @@ const BoardCard = ({
 BoardCard.skeleton = function boardCardSkeleton() {
   return (
     <>
-      <div className="rounded-lg overflow-hidden">
-        <Skeleton className="w-full h-60 bg-muted" />
+      <div className="overflow-hidden rounded-2xl">
+        <Skeleton className="h-60 w-full bg-muted" />
       </div>
     </>
   );

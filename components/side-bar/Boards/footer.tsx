@@ -22,37 +22,35 @@ const Footer = ({
   const createdAtLabel = formatDistanceToNow(createdAt, { addSuffix: true });
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
     onClick(e);
   };
 
   return (
-    <div className="relative bg-white p-3">
-      <p className="text-sm font-semibold text-slate-800 truncate max-w-[calc(100%-20px)]">
+    <div className="relative bg-card p-3">
+      <p className="max-w-[calc(100%-24px)] truncate text-sm font-medium text-foreground">
         {title}
       </p>
-     <div className="opacity-0 group-hover:opacity-100 transition">
-       <p className="text-xs text-muted-foreground truncate">
+      <p className="truncate text-xs text-muted-foreground opacity-0 transition group-hover:opacity-100">
         {authorName}, {createdAtLabel}
       </p>
       <button
         onClick={handleClick}
-        disabled={disabled} 
+        disabled={disabled}
         className={cn(
-          "absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition",
+          "absolute top-3 right-3 opacity-0 transition group-hover:opacity-100",
           disabled && "cursor-not-allowed opacity-75"
         )}
       >
         <Star
           className={cn(
-            "w-4 h-4 hover:stroke-yellow-400 transition",
+            "h-4 w-4 transition hover:stroke-lime-400",
             isFavorite
-              ? "fill-yellow-400 stroke-yellow-400"
-              : "stroke-slate-500"
+              ? "fill-lime-400 stroke-lime-400"
+              : "stroke-muted-foreground"
           )}
         />
       </button>
-     </div>
     </div>
   );
 };

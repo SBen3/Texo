@@ -17,17 +17,17 @@ export const UserAvatar = ({
   return (
     <Hint label={name ?? "Teammate"} sideOffset={10} side="left" >
       <Avatar
-        className="relative w-8 h-8 rounded-full flex items-center justify-center border-2 overflow-hidden"
-        style={{ borderColor }}
+        className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border-2 border-card ring-2"
+        style={{ ["--tw-ring-color" as string]: borderColor }}
       >
         {src ? (
           <AvatarImage
             src={src}
             alt={name ?? "user"}
-            className="w-full h-full object-cover"
+            className="h-full w-full object-cover"
           />
         ) : (
-          <AvatarFallback className="text-xs font-semibold text-white bg-amber-300" style={{ backgroundColor: borderColor }}>
+          <AvatarFallback className="text-xs font-semibold text-white" style={{ backgroundColor: borderColor }}>
             {fallback}
           </AvatarFallback>
         )}

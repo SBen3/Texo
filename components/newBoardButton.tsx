@@ -7,12 +7,11 @@ import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-
 interface newBoardButtonProps {
-  orgId: string,
-  disabled: boolean,
-};
-const CreateBoard = ({orgId, disabled}: newBoardButtonProps ) => {
+  orgId: string;
+  disabled: boolean;
+}
+const CreateBoard = ({ orgId, disabled }: newBoardButtonProps) => {
   const create = useMutation(api.board.create);
   const router = useRouter();
 
@@ -36,12 +35,14 @@ const CreateBoard = ({orgId, disabled}: newBoardButtonProps ) => {
       disabled={disabled}
       onClick={handleCreate}
       className={cn(
-        "col-span-1 rounded-md bg-teal-700 hover:bg-teal-800 transition flex flex-col items-center justify-center py-6",
-        disabled && "opacity-75 cursor-not-allowed"
+        "col-span-1 flex h-full flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-border bg-card text-muted-foreground transition-colors hover:border-lime-400 hover:text-lime-400",
+        disabled && "cursor-not-allowed opacity-50"
       )}
     >
-      <Plus className="w-12 h-12 text-white stroke-1" />
-      <p className="text-sm text-white font-light">New Board</p>
+      <div className="flex size-11 items-center justify-center rounded-full bg-lime-400/10 text-lime-400">
+        <Plus className="size-5" strokeWidth={2.5} />
+      </div>
+      <p className="text-sm font-medium">New Board</p>
     </button>
   );
 };

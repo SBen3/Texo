@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
-import boardPic from "@/public/board.png";
 import { useOrganization } from "@clerk/nextjs";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { LayoutTemplate, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const BoardUi = () => {
   const { organization } = useOrganization();
@@ -26,21 +26,21 @@ const BoardUi = () => {
   };
 
   return (
-    <div className="mx-auto flex max-w-md flex-col items-center gap-4 border-4 border-black bg-white p-8 text-center shadow-[8px_8px_0px_0px_black]">
-      <div className="relative h-16 w-16">
-        <div className="absolute left-0 top-0 h-8 w-8 rounded-full bg-[#1040C0]" />
-        <div className="absolute bottom-0 right-0 h-8 w-8 rotate-45 bg-[#F0C020]" />
+    <div className="mx-auto flex max-w-md flex-col items-center gap-4 rounded-2xl border border-border bg-card p-10 text-center shadow-card">
+      <div className="flex size-14 items-center justify-center rounded-full bg-lime-200 text-lime-500">
+        <LayoutTemplate className="size-6" strokeWidth={2} />
       </div>
-      <Image src={boardPic} alt="" width={220} height={220} className="grayscale" />
-      <div className="flex flex-col items-center gap-2">
-        <p className="text-3xl font-black uppercase tracking-tighter">No Boards Found</p>
-        <p className="font-medium text-black/70">Create a board to get started.</p>
-        <button
-          onClick={handleCreateBoard}
-          className="mt-2 border-2 border-black bg-[#D02020] px-4 py-2 text-xs font-bold uppercase tracking-wider text-white shadow-[3px_3px_0px_0px_black] transition-all duration-200 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
-        >
+      <div className="flex flex-col items-center gap-1">
+        <p className="text-xl font-semibold tracking-[-0.02em] text-foreground">
+          No boards yet
+        </p>
+        <p className="text-sm text-muted-foreground">
+          Create your first board to start collaborating.
+        </p>
+        <Button onClick={handleCreateBoard} className="mt-4">
+          <Plus size={14} />
           Create Board
-        </button>
+        </Button>
       </div>
     </div>
   );

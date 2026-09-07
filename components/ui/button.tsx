@@ -5,35 +5,39 @@ import { Slot } from "radix-ui"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex shrink-0 items-center justify-center gap-2 text-sm font-bold uppercase tracking-wide whitespace-nowrap transition-all duration-200 ease-out outline-none border-2 focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "inline-flex shrink-0 items-center justify-center gap-2 text-sm font-medium tracking-[-0.02em] whitespace-nowrap transition-all duration-200 ease-out outline-none focus-visible:ring-[3px] focus-visible:ring-ring/40 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
+        // Primary CTA — Midnight fill, pill radius (never a colored fill)
         default:
-          "bg-primary text-primary-foreground border-black shadow-[4px_4px_0px_0px_#121212] hover:bg-primary/90 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none",
+          "bg-primary text-primary-foreground shadow-button hover:opacity-90 active:opacity-100",
+        // Secondary dark action — Carbon fill, used for dense nav/toolbar CTAs
         secondary:
-          "bg-secondary text-secondary-foreground border-black shadow-[4px_4px_0px_0px_#121212] hover:bg-secondary/90 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none",
-        accent:
-          "bg-accent text-accent-foreground border-black shadow-[4px_4px_0px_0px_#121212] hover:bg-accent/90 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none",
+          "bg-secondary text-secondary-foreground shadow-button hover:opacity-90",
+        // Ghost / outline nav link — white bg, hairline-free, sits inside pill nav
         outline:
-          "bg-white text-foreground border-black shadow-[4px_4px_0px_0px_#121212] hover:bg-muted active:translate-x-[2px] active:translate-y-[2px] active:shadow-none",
+          "bg-card text-foreground border border-border hover:bg-muted",
+        accent:
+          "bg-accent text-accent-foreground hover:opacity-90",
         destructive:
-          "bg-destructive text-white border-black shadow-[4px_4px_0px_0px_#121212] hover:bg-destructive/90 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none",
-        ghost:
-          "border-transparent text-foreground hover:bg-muted",
-        link: "border-transparent text-primary underline-offset-4 hover:underline",
-        board: "border-transparent hover:bg-orange-500/10 hover:text-orange-500/70 hover:rounded-md text-xs",
-        boardActive: "border-transparent bg-orange-500/10 text-orange-500/70 rounded-md",
+          "bg-destructive text-destructive-foreground hover:opacity-90",
+        ghost: "text-foreground hover:bg-muted",
+        link: "text-primary underline-offset-4 hover:underline",
+        // Board canvas toolbar buttons — icon-only, tinted active state
+        board:
+          "text-muted-foreground hover:bg-lime-200/30 hover:text-lime-600",
+        boardActive: "bg-lime-200/30 text-lime-600 ",
       },
       shape: {
-        square: "rounded-none",
         pill: "rounded-full",
+        square: "rounded-xl",
       },
       size: {
-        default: "h-9 px-4 py-2 has-[>svg]:px-3",
+        default: "h-9 px-4 py-2 has-[>svg]:px-3.5",
         xs: "h-6 gap-1 px-2 text-xs has-[>svg]:px-1.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-8 gap-1.5 px-3 has-[>svg]:px-2.5",
-        lg: "h-11 px-6 has-[>svg]:px-4",
+        sm: "h-8 gap-1.5 px-3.5 has-[>svg]:px-3",
+        lg: "h-11 px-6 has-[>svg]:px-5",
         icon: "size-9",
         "icon-xs": "size-6 [&_svg:not([class*='size-'])]:size-3",
         "icon-sm": "size-8",
@@ -42,7 +46,7 @@ const buttonVariants = cva(
     },
     defaultVariants: {
       variant: "default",
-      shape: "square",
+      shape: "pill",
       size: "default",
     },
   }
@@ -51,7 +55,7 @@ const buttonVariants = cva(
 function Button({
   className,
   variant = "default",
-  shape = "square",
+  shape = "pill",
   size = "default",
   asChild = false,
   ...props

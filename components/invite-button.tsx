@@ -1,21 +1,21 @@
 "use client";
 
-import { Plus } from "lucide-react";
+import { UserPlus } from "lucide-react";
 import { useClerk } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
 
 const InviteButton = () => {
   const { openOrganizationProfile } = useClerk();
   return (
-    <div className="flex w-full h-full p-1 pr-2 bg-gray-300 text-black rounded-md hover:bg-gray-400 transition cursor-pointer 
-    ">
-            <Plus size={15} className="inline-block m-2" />
-      <div
-        className="flex self-center pb-1 text-xs md:text-sm"
-        onClick={() => openOrganizationProfile()}
-      >
-        Invite Members
-      </div>
-    </div>
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={() => openOrganizationProfile()}
+      className="hidden sm:inline-flex"
+    >
+      <UserPlus size={14} />
+      Invite Members
+    </Button>
   );
 };
 export default InviteButton;

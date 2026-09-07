@@ -31,7 +31,7 @@ const Hint = ({
             align={align}
             sideOffset={sideOffset}
             alignOffset={alignOffset}
-            className="bg-black text-white p-2 rounded-md text-[10px] shadow-lg"
+            className="bg-foreground text-background p-2 rounded-full px-3 text-[10px] font-medium shadow-card z-50"
           >
             <p>{label}</p>
           </TooltipContent>
