@@ -14,7 +14,7 @@ const DashboardPage = () => {
 
   return (
     <div className="bg-white dark:bg-sidebar">
-      <div className="relative overflow-hidden bg-lime-300/20 dark:bg-lime-950/50 px-4 py-10sm:px-6 sm:py-14 lg:px-8">
+      <div className="relative flex flex-col justify-center items-start overflow-hidden bg-lime-300/20 dark:bg-lime-950/50 px-4 sm:px-6 sm:py-14 lg:px-8 h-44">
         <div
           className="pointer-events-none absolute -right-14 -top-14 h-48 w-48 rounded-full bg-lime-200/70"
           aria-hidden

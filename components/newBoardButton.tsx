@@ -36,6 +36,7 @@ const CreateBoard = ({ orgId, disabled }: newBoardButtonProps) => {
       onClick={handleCreate}
       className={cn(
         "col-span-1 flex h-full flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-border bg-card text-muted-foreground transition-colors hover:border-lime-400 hover:text-lime-400",
+        "col-span-1 flex flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-border bg-card text-muted-foreground transition-colors hover:border-lime-400 hover:text-lime-400 h-full",
         disabled && "cursor-not-allowed opacity-50"
       )}
     >

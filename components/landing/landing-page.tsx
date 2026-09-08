@@ -505,7 +505,7 @@ export default function LandingPage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-midnight px-4 py-12 text-white sm:px-6 dark:bg-card dark:text-foreground">
+      <footer className="bg-midnight px-4 py-12 text-white sm:px-6 dark:bg-[#060709] dark:text-white">
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
           <div className="flex items-center gap-2">
             <Image src="/icon.svg" alt="Texo" width={24} height={24} />

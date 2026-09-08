@@ -22,7 +22,7 @@ const BoardList = ({ orgId, query }: BoardListProps) => {
   if (boards === undefined) {
     return (
       <div>
-        <h1 className="mb-4 text-2xl font-semibold tracking-[-0.03em] text-foreground">
+        <h1 className="mb-2 text-2xl font-semibold tracking-[-0.03em] text-foreground">
           {query.favorites ? "Favorite Boards" : "Team Boards"}
         </h1>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">

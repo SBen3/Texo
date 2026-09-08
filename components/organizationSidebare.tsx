@@ -12,7 +12,7 @@ const OrgSideBare = () => {
   const favorites = searchParams.get("favorites");
 
   return (
-    <div className="flex min-w-60 flex-col gap-6 border-r border-white/10 bg-midnight p-5 text-white dark:bg-sidebar">
+    <div className="flex min-w-60 flex-col gap-6 border-r border-white/10 bg-midnight p-5 text-white dark:bg-[#060709]">
       <Link href="/" className="flex items-center gap-2">
         <Image src="/icon.svg" alt="Texo" width={32} height={32}/>
         <p className="text-lg font-semibold tracking-[-0.03em]">Texo</p>
