@@ -10,7 +10,7 @@ import {
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { AuthLoading } from "convex/react";
 import LandingPage from "@/components/landing/landing-page";
-import { Loading } from "@/app/board/[boardId]/_component/loading";
+import AuthLoad from "@/app/(auth)/authLoad";
 
 const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
@@ -23,7 +23,7 @@ export function ConvexClientProvider({ children }: { children: ReactNode }) {
           <LandingPage />
         </Unauthenticated>
         <AuthLoading>
-          <Loading />
+          <AuthLoad />
         </AuthLoading>
       </ConvexProviderWithClerk>
     </ClerkProvider>

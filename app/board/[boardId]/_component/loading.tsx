@@ -6,7 +6,7 @@ import { ToolbarSkeleton } from "./toolbar";
 export const Loading = () => {
   return (
     <div className="relative flex flex-col h-screen w-full items-center justify-center bg-background">
-      <div className="animate-bounce">
+      <div className="animate-pulse">
         <Image
           src="/icon.svg"
           alt="Texo"

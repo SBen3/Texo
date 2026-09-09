@@ -5,41 +5,36 @@ import { ThemeToggle } from "./theme-toggle";
 
 const NavBar = () => {
   return (
-    <div className="flex items-center justify-between gap-4 border-b border-border bg-card px-4 py-3">
-      {/* Search - desktop */}
-      <div className="hidden lg:flex lg:items-center lg:gap-4">
-        <SearchInput />
-      </div>
-
-      {/* Org switcher - mobile */}
-      <div className="flex items-center gap-2 lg:hidden">
-        <OrganizationSwitcher
-          appearance={{
-            elements: {
-              rootBox:
-                "bg-muted hover:bg-accent transition-colors duration-200 rounded-full",
-              organizationSwitcherTrigger:
-                "text-foreground font-medium",
-              organizationPreviewTextContainer: "text-foreground font-medium",
-            },
-          }}
-        />
-      </div>
-
-      {/* Actions */}
-      <div className="flex items-center gap-3">
-        <ThemeToggle />
-        <InviteButton />
-
-        <div className="">
-          <UserButton
+    <div className="flex flex-col gap-3 border-b border-border bg-card px-4 py-3 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
+      <div className="flex items-center justify-between gap-2">
+        <div className="block lg:hidden">
+          <OrganizationSwitcher
             appearance={{
               elements: {
-                avatarBox: "rounded-full ring-lime-300 ring-2",
+                rootBox:
+                  "bg-muted hover:bg-accent transition-colors duration-200 rounded-full",
+                organizationSwitcherTrigger: "text-foreground",
+                organizationPreviewTextContainer: "text-foreground font-medium",
               },
             }}
           />
         </div>
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <InviteButton />
+          <div className="mt-1.5">
+            <UserButton
+              appearance={{
+                elements: {
+                  avatarBox: "rounded-full ring-lime-300 ring-2",
+                },
+              }}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="w-full lg:max-w-xs lg:order-first">
+        <SearchInput />
       </div>
     </div>
   );
