@@ -81,6 +81,6 @@ export const Info = ({ boardId }: InfoProp) => {
 
 export const InfoSkeleton = () => {
   return (
-    <div className="absolute top-2 left-2 h-[52px] w-[300px] animate-pulse rounded-2xl bg-muted px-4 py-2 shadow-card"></div>
+    <div className="absolute top-2 left-2 h-[52px] w-[100px] lg:w-[300px] animate-pulse rounded-2xl bg-muted px-4 py-2 shadow-card"></div>
   );
 };
